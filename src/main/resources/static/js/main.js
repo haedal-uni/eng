@@ -97,3 +97,26 @@ document.addEventListener('keydown', function (event) {
         }
     }
 });
+
+// 파일 업로드
+function uploadFile(input) {
+    const file = input.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    // AJAX 파일 업로드
+    fetch('/upload-excel', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => {
+            if (response.ok) {
+                return "upload success";
+            }
+            throw new Error('File upload failed');
+        })
+        .then(message => alert(message))
+        .catch(error => alert(error.message));
+}
