@@ -6,11 +6,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED) // builder
 public class Word {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,6 +20,9 @@ public class Word {
 
     @Column(unique = true, nullable = false)
     private String word;
+
+    @OneToMany(mappedBy = "word")
+    private List<Meaning> meaningList = new ArrayList<>();
 
     @Builder
     public Word(String word){
