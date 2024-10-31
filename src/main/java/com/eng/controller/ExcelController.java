@@ -17,5 +17,6 @@ public class ExcelController {
     @PostMapping("/upload-excel")
     public void postWord(MultipartFile file) throws IOException {
         service.saveWord(file);
+        service.saveMeaning(file);
     }
 }
