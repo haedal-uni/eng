@@ -7,6 +7,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static jakarta.persistence.FetchType.LAZY;
 
 @Entity
@@ -18,8 +21,11 @@ public class Meaning {
 
     @ManyToOne(fetch = LAZY, cascade = CascadeType.REMOVE) // ON DELETE CASCADE
     @JsonIgnore
-    @JoinColumn(name="WORD_ID")
+    @JoinColumn(name="word_id")
     private Word word;
+
+    @OneToMany(mappedBy = "meaning")
+    private List<Sentence> sentenceList = new ArrayList<>();
 
     @Column(nullable = false)
     private String meaning;

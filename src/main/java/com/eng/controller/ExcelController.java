@@ -18,5 +18,6 @@ public class ExcelController {
     public void postWord(MultipartFile file) throws IOException {
         service.saveWord(file);
         service.saveMeaning(file);
+        service.saveSentence(file);
     }
 }
