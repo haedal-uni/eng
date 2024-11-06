@@ -21,7 +21,7 @@ public class Study {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "word_id")
     private Word word;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
