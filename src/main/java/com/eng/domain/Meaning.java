@@ -30,6 +30,9 @@ public class Meaning {
     @Column(nullable = false)
     private String meaning;
 
+    @OneToMany(mappedBy = "meaning")
+    private List<Study> studyList = new ArrayList<>();
+
     @Builder
     private Meaning(Word word, String meaning){
         this.word = word;
