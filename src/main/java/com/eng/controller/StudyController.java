@@ -16,7 +16,7 @@ public class StudyController {
     private final StudyService service;
 
     @GetMapping("/study-words/{username}")
-    public Page<StudyResponseDto> getStudyWords(@PathVariable String username){
+    public List<StudyResponseDto> getStudyWords(@PathVariable String username){
         return service.getStudyWord(username);
     }
 }
