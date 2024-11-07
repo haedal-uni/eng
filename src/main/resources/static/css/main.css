@@ -71,7 +71,8 @@ body {
 /* 모달 */
 .modal-dialog {
     max-height: 600px;
-    max-width: 530px;
+    max-width: 600px;
+    --bs-modal-width: 600px;
 }
 
 .modal-content {
