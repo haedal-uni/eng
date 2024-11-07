@@ -24,6 +24,9 @@ public class Word {
     @OneToMany(mappedBy = "word")
     private List<Meaning> meaningList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "word")
+    private List<Study> studyList = new ArrayList<>();
+
     @Builder
     public Word(String word){
         this.word = word;

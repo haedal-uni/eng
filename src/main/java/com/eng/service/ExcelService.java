@@ -14,6 +14,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,6 +35,7 @@ public class ExcelService {
     private final SentenceRepository sentenceRepository;
     private static final Map<String, Long> wordIdMap = new HashMap<>();
 
+    @Transactional
     public void saveWord(MultipartFile file) throws IOException {
         // workbook : 하나의 엑셀 파일을 의미
         Workbook workbook = new XSSFWorkbook(file.getInputStream());
@@ -58,6 +60,7 @@ public class ExcelService {
         }
     }
 
+    @Transactional
     public void saveMeaning(MultipartFile file) throws IOException {
         Workbook workbook = new XSSFWorkbook(file.getInputStream());
         Sheet sheet = workbook.getSheetAt(0); // 첫번째 sheet
@@ -92,6 +95,7 @@ public class ExcelService {
         meanRepository.saveAll(list);
     }
 
+    @Transactional
     public void saveSentence(MultipartFile file) throws IOException {
         Workbook workbook = new XSSFWorkbook(file.getInputStream());
         Sheet sheet = workbook.getSheetAt(0);
