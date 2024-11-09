@@ -1,4 +1,3 @@
-let currentCard = 0;
 
 // 학습하기 모달의 단어 표시
 function showStudyModal() {
