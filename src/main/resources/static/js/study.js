@@ -1,9 +1,10 @@
-let cards=[];
+let cards;
 let username = "guest"
 
 function getStudyWords() {
     if(localStorage.getItem(username)){
-        cards = localStorage.getItem(JSON.parse(localStorage.getItem(username)))
+        cards = JSON.parse(localStorage.getItem(username))
+        showStudyModal();
     }else{
         $.ajax({
             type: "GET",
@@ -13,7 +14,7 @@ function getStudyWords() {
             contentType: false,
             processData: false,
             success: function (response) {
-                window.localStorage.setItem(username,JSON.stringify(response));
+                localStorage.setItem(username,JSON.stringify(response));
                 cards = response;
                 let temp = `
             <h5 class="card-title english-text" id="wordTitle">${response[0]["word"]}</h5>
@@ -29,3 +30,12 @@ function getStudyWords() {
         })
     }
 }
+let currentName = username+"page";
+let currentCard = localStorage.getItem(currentName)?localStorage.getItem(currentName):0;
+// studyModal 요소 선택
+const studyModal = document.getElementById("studyModal");
+
+// 모달이 닫힐 때 localStorage에 저장하는 EventListener 추가
+studyModal.addEventListener("hidden.bs.modal", () => {
+    localStorage.setItem(currentName, currentCard);
+});
