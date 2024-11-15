@@ -14,7 +14,10 @@ function getStudyWords() {
             contentType: false,
             processData: false,
             success: function (response) {
-                localStorage.setItem(username,JSON.stringify(response));
+                const now = new Date();
+                const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0); // 다음 날 자정
+                const ttl = midnight.getTime() - now.getTime(); // 밀리초 단위 남은 시간
+                setTTL(username,JSON.stringify(response), ttl)
                 cards = response;
                 let temp = `
             <h5 class="card-title english-text" id="wordTitle">${response[0]["word"]}</h5>
@@ -30,6 +33,17 @@ function getStudyWords() {
         })
     }
 }
+
+// 만료 시간 설정 (하루에서 남은 시간)
+function setTTL(username, value, ttl){
+    const expiry = Date.now() + ttl; // 현재 날짜 + TTL(ms)
+    const item = {
+        value, // 저장할 데이터
+        expiry // 만료 시간
+    };
+    localStorage.setItem(username, JSON.stringify(item));
+}
+
 let currentName = username+"page";
 let currentCard = localStorage.getItem(currentName)?localStorage.getItem(currentName):0;
 // studyModal 요소 선택
@@ -37,5 +51,8 @@ const studyModal = document.getElementById("studyModal");
 
 // 모달이 닫힐 때 localStorage에 저장하는 EventListener 추가
 studyModal.addEventListener("hidden.bs.modal", () => {
-    localStorage.setItem(currentName, currentCard);
+    const now = new Date();
+    const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0); // 다음 날 자정
+    const ttl = midnight.getTime() - now.getTime(); // 밀리초 단위 남은 시간
+    setTTL(currentName, currentCard, ttl)
 });
