@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -28,18 +30,23 @@ public class Study {
     @JoinColumn(name = "meaning_id")
     private Meaning meaning;
 
+    @Column
+    private LocalDate date;
+
     @Builder
-    private Study(User user, Word word, Meaning meaning) {
+    private Study(User user, Word word, Meaning meaning, LocalDate date) {
         this.user = user;
         this.word = word;
         this.meaning = meaning;
+        this.date = date;
     }
 
-    public static Study createStudy(User user, Word word, Meaning meaning) {
+    public static Study createStudy(User user, Word word, Meaning meaning, LocalDate date) {
         return Study.builder()
                 .user(user)
                 .word(word)
                 .meaning(meaning)
+                .date(date)
                 .build();
     }
 }
