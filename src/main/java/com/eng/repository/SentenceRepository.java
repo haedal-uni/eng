@@ -8,4 +8,7 @@ public interface SentenceRepository extends JpaRepository<Sentence, Long> {
     @Query(nativeQuery = true, value = "SELECT EXISTS " +
             "(SELECT 1 FROM Sentence s WHERE s.meaning_id = :meaningId AND s.sentence = :sentence)")
     int existsByMeanAndSentence(Long meaningId, String sentence);
+
+    @Query("select st from Sentence st where st.meaning.id = :meaningId")
+    Sentence findBySentence(Long meaningId);
 }
