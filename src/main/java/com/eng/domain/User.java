@@ -1,5 +1,6 @@
 package com.eng.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -15,5 +16,6 @@ public class User {
     private String password;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<Study> studyList = new ArrayList<>();
 }

@@ -1,5 +1,6 @@
 package com.eng.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -19,14 +20,17 @@ public class Study {
     private long id;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @JsonIgnore
     @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @JsonIgnore
     @JoinColumn(name = "word_id")
     private Word word;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @JsonIgnore
     @JoinColumn(name = "meaning_id")
     private Meaning meaning;
 
