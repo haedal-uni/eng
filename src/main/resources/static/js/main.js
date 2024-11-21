@@ -1,4 +1,3 @@
-
 // 학습하기 모달의 단어 표시
 function showStudyModal() {
     updateCardDisplay()
@@ -7,6 +6,10 @@ function showStudyModal() {
 }
 
 function updateCardDisplay() {
+    if(maxPage<currentCard){
+        maxPage = currentCard;
+        exchange=9;
+    }
     let card = cards[currentCard];
     document.getElementById('wordTitle').innerText = card.word;
     document.getElementById('wordMeaning').innerText = card.meaning;
