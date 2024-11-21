@@ -1,29 +1,40 @@
 package com.eng.service;
 
-import com.eng.domain.Study;
+import com.eng.dto.StudyDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
 public class RedisService {
     private final RedisTemplate<String, Integer> numTemplate;
-    private final RedisTemplate<String, List<Study>> redisTemplate;
+    private final RedisTemplate<String, List<StudyDto>> redisTemplate;
 
-    public void addStudyList(String username, List<Study> list){
-        redisTemplate.opsForValue().set(username+"list", list);
+    public void addStudyList(String username, List<StudyDto> dto){
+        LocalTime midnight = LocalTime.MIDNIGHT;
+        Duration ttl = Duration.between(LocalDateTime.now(), LocalDateTime.now().toLocalDate().atTime(midnight).plusDays(1));
+        redisTemplate.opsForValue().set(username + "list", dto);
+        redisTemplate.expire(username + "list", ttl.getSeconds(), TimeUnit.SECONDS);
     }
 
-    public List<Study> getStudyList(String username){
-        return redisTemplate.opsForValue().get(username+"list");
+    public List<StudyDto> getStudyList(String username){
+        return redisTemplate.opsForValue().get(username + "list");
     }
 
     public void addMaxPage(String username, int maxPage){
+        LocalTime midnight = LocalTime.MIDNIGHT;
+        Duration ttl = Duration.between(LocalDateTime.now(), LocalDateTime.now().toLocalDate().atTime(midnight).plusDays(1));
         numTemplate.opsForValue().set(username+"page", maxPage);
+        numTemplate.expire(username+"page",ttl.getSeconds(), TimeUnit.SECONDS);
     }
+
     public Integer getMaxPage(String username){
         return numTemplate.opsForValue().get(username+"page");
     }

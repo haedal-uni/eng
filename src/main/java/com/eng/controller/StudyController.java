@@ -18,4 +18,9 @@ public class StudyController {
     public List<StudyResponseDto> getStudyWords(@PathVariable String username){
         return service.getStudyWord(username);
     }
+
+    @GetMapping("/study-words/{page}/{username}")
+    public void getPage(@PathVariable int page, @PathVariable String username){
+        service.saveStudyWord(username, page);
+    }
 }

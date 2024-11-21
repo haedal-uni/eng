@@ -13,4 +13,7 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
 
     @Query("select s from Study s where s.date = :today")
     List<Study> findLastDayForStudy(LocalDate today);
+
+    @Query("select count(*) from Study s where s.date = :today")
+    int countLastDayForStudy(LocalDate today);
 }
