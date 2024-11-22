@@ -34,22 +34,29 @@ public class Study {
     @JoinColumn(name = "meaning_id")
     private Meaning meaning;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @JsonIgnore
+    @JoinColumn(name = "sentence_id")
+    private Sentence sentence;
+
     @Column
     private LocalDate date;
 
     @Builder
-    private Study(User user, Word word, Meaning meaning, LocalDate date) {
+    private Study(User user, Word word, Meaning meaning, Sentence sentence, LocalDate date) {
         this.user = user;
         this.word = word;
         this.meaning = meaning;
+        this.sentence = sentence;
         this.date = date;
     }
 
-    public static Study createStudy(User user, Word word, Meaning meaning, LocalDate date) {
+    public static Study createStudy(User user, Word word, Meaning meaning, Sentence sentence, LocalDate date) {
         return Study.builder()
                 .user(user)
                 .word(word)
                 .meaning(meaning)
+                .sentence(sentence)
                 .date(date)
                 .build();
     }

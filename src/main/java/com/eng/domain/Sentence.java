@@ -1,10 +1,14 @@
 package com.eng.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static jakarta.persistence.FetchType.LAZY;
 
@@ -18,6 +22,10 @@ public class Sentence {
     @ManyToOne(fetch = LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name="meaning_id")
     private Meaning meaning;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "sentence")
+    private List<Sentence> sentenceList = new ArrayList<>();
 
     @Column(nullable = false)
     private String sentence;
