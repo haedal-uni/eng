@@ -5,7 +5,6 @@ import com.eng.dto.StudyDto;
 import com.eng.dto.StudyResponseDto;
 import com.eng.exception.notfound.UserNotFoundException;
 import com.eng.repository.*;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
@@ -42,7 +41,8 @@ public class StudyService {
         }else{ // 오늘 날짜라면 Study 테이블에서 조회
             List<Study> study = studyRepository.findLastDayForStudy(today); // 오늘날짜에 학습한 데이터 조회
             for(Study st : study){
-                Sentence sentence = sentenceRepository.findBySentence(st.getMeaning().getId());
+                // 단어에 해당하는 예문이 중복일 수 있으므로 첫번째 조회
+                Sentence sentence = sentenceRepository.findBySentence(st.getMeaning().getId()).get(0);
                 list.add(StudyResponseDto.of(
                         st.getWord().getWord(),
                         st.getMeaning().getMeaning(),
@@ -50,19 +50,17 @@ public class StudyService {
                         sentence.getSentence_meaning(),
                         sentence.getLevel()
                 ));
-                // StudyDto에 변환하여 추가
-                studyList.add(StudyDto.of(
-                        st.getUser().getId(),
-                        st.getWord().getId(),
-                        st.getMeaning().getId(),
-                        st.getDate()
-                ));
             }
             if(study.size()<10){ // 10개의 단어 중 학습하지 않은 일부 단어들 list에 추가적으로 저장
                 paging(user, list, 10-study.size(), studyList,today);
             }
         }
         redisService.addStudyList(username, studyList);
+        for(StudyResponseDto dto : list){
+            log.info(dto.getWord());
+            log.info(dto.getMeaning());
+            log.info(dto.getSentence());
+        }
         return list;
     }
 
@@ -73,7 +71,7 @@ public class StudyService {
         for (Object[] result : results) {
             Meaning meaning = (Meaning) result[0];
             Sentence sentence = (Sentence) result[1];
-            studyList.add(StudyDto.of(user.getId(),meaning.getWord().getId(),meaning.getId(),date));
+            studyList.add(StudyDto.of(user.getId(),meaning.getWord().getId(),meaning.getId(),sentence.getId(),date));
             list.add(StudyResponseDto.of(
                     meaning.getWord().getWord(),
                     meaning.getMeaning(),
@@ -86,11 +84,13 @@ public class StudyService {
 
     public void saveStudyWord(String username, int maxPage){
         LocalDate today = LocalDate.now();
-        // Redis 캐시 확인
         List<StudyDto> cachedStudyList = redisService.getStudyList(username);
         Integer lastPage = redisService.getMaxPage(username);
         int startIndex = (lastPage != null) ? lastPage : studyRepository.countLastDayForStudy(today);
-        if(cachedStudyList!=null){ // 캐시가 있을 경우
+        if(maxPage<startIndex){
+            return;
+        }
+        if(cachedStudyList!=null && !cachedStudyList.isEmpty()){ // 캐시가 있을 경우
             int endIndex;
             List<StudyDto> studiesToSaveDto;
             List<StudyDto> remainingCache;
@@ -104,13 +104,13 @@ public class StudyService {
                 studiesToSaveDto = new ArrayList<>(cachedStudyList.subList(0, endIndex));
                 remainingCache = new ArrayList<>(cachedStudyList.subList(endIndex, cachedStudyList.size()));
             }
-
             // DTO -> Entity 변환
             List<Study> studiesToSave = studiesToSaveDto.stream()
                     .map(dto -> Study.createStudy(
                             userRepository.getReferenceById(dto.getUserId()),
                             wordRepository.getReferenceById(dto.getWordId()),
                             meanRepository.getReferenceById(dto.getMeaningId()),
+                            sentenceRepository.getReferenceById(dto.getSentenceId()),
                             dto.getDate()
                     ))
                     .toList();
@@ -136,8 +136,9 @@ public class StudyService {
         List<StudyDto> totalStudy = new ArrayList<>();
         for (Object[] result : results) {
             Meaning meaning = (Meaning) result[0];
+            Sentence sentence = (Sentence) result[1];
             Word word = meaning.getWord();
-            totalStudy.add(StudyDto.of(user.getId(), word.getId(), meaning.getId(), today));
+            totalStudy.add(StudyDto.of(user.getId(), word.getId(), meaning.getId(), sentence.getId(), today));
         }
         List<StudyDto> addStudy  = new ArrayList<>(totalStudy.subList(0, maxPage-startPage));
         List<StudyDto> addCache = new ArrayList<>(totalStudy.subList(maxPage - startPage, totalStudy.size()));
@@ -148,6 +149,7 @@ public class StudyService {
                         userRepository.getReferenceById(dto.getUserId()),
                         wordRepository.getReferenceById(dto.getWordId()),
                         meanRepository.getReferenceById(dto.getMeaningId()),
+                        sentenceRepository.getReferenceById(dto.getSentenceId()),
                         dto.getDate()
                 ))
                 .toList();
