@@ -24,12 +24,14 @@ public class Meaning {
     @JoinColumn(name="word_id")
     private Word word;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "meaning")
     private List<Sentence> sentenceList = new ArrayList<>();
 
     @Column(nullable = false)
     private String meaning;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "meaning")
     private List<Study> studyList = new ArrayList<>();
 

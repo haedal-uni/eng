@@ -1,10 +1,8 @@
 package com.eng.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +19,11 @@ public class Word {
     @Column(unique = true, nullable = false)
     private String word;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "word")
     private List<Meaning> meaningList = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "word")
     private List<Study> studyList = new ArrayList<>();
 
