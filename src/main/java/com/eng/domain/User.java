@@ -15,7 +15,7 @@ public class User {
     private String username;
     private String password;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval=true)
     @JsonIgnore
     private List<Study> studyList = new ArrayList<>();
 }

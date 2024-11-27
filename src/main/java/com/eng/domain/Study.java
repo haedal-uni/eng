@@ -19,28 +19,32 @@ public class Study {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinColumn(name = "word_id")
     private Word word;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinColumn(name = "meaning_id")
     private Meaning meaning;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinColumn(name = "sentence_id")
     private Sentence sentence;
 
     @Column
     private LocalDate date;
+
+    @OneToOne(mappedBy = "study", cascade = CascadeType.REMOVE, orphanRemoval=true)
+    @JsonIgnore
+    private Quiz quiz;
 
     @Builder
     private Study(User user, Word word, Meaning meaning, Sentence sentence, LocalDate date) {
