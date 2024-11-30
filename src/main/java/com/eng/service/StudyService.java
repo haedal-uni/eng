@@ -27,6 +27,7 @@ public class StudyService {
     private final SentenceRepository sentenceRepository;
     private final RedisService redisService;
     private final WordRepository wordRepository;
+    private final JdbcRepository jdbcRepository;
 
     // 단어 가져오기(Study 테이블 저장 제거)
     @Cacheable(key = "#username", value = "getStudyWord", unless = "#result==null", cacheManager = "cacheManager")
@@ -55,12 +56,7 @@ public class StudyService {
                 findNotInStudy(user, list, 10-study.size(), studyList,today);
             }
         }
-        redisService.addStudyList(username, studyList);
-        for(StudyResponseDto dto : list){
-            log.info(dto.getWord());
-            log.info(dto.getMeaning());
-            log.info(dto.getSentence());
-        }
+        //redisService.addStudyList(username, studyList);
         return list;
     }
 
@@ -117,6 +113,12 @@ public class StudyService {
             // Study 테이블에 저장
             studyRepository.saveAll(studiesToSave);
 
+            List<Quiz> quizList = studiesToSave.stream()
+                    .map(Quiz::addQuiz)
+                            .toList();
+            // Quiz 저장
+            jdbcRepository.batchInsert(quizList);
+
             // Redis Cache 업데이트: 학습하지 않은 데이터만 갱신
             redisService.addStudyList(username, remainingCache);
 
@@ -154,6 +156,11 @@ public class StudyService {
                 ))
                 .toList();
         studyRepository.saveAll(studiesToSave);
+
+        List<Quiz> quizList = studiesToSave.stream()
+                .map(Quiz::addQuiz)
+                .toList();
+        jdbcRepository.batchInsert(quizList);
 
         // Redis cache 저장
         redisService.addStudyList(user.getUsername(), addCache);
