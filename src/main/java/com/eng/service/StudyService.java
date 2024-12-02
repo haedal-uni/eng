@@ -56,7 +56,7 @@ public class StudyService {
                 findNotInStudy(user, list, 10-study.size(), studyList,today);
             }
         }
-        //redisService.addStudyList(username, studyList);
+        redisService.addStudyList(username, studyList);
         return list;
     }
 

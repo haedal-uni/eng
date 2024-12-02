@@ -13,15 +13,16 @@ public class JdbcRepository {
     private final JdbcTemplate template;
 
     public void batchInsert(List<Quiz> quizList) {
-        // 1. Insert SQL 정의
-        String sql = "INSERT INTO quiz (study_id, correct) VALUES (?, ?)";
+        // Insert SQL
+        String sql = "INSERT INTO quiz (study_id, correct, user_id) VALUES (?, ?, ?)";
 
-        // 2. Batch Insert 실행 (sql, batchArgs, batchSize, sql ?에 들어갈 값)
+        // Batch Insert (sql, batchArgs, batchSize, sql ?에 들어갈 값)
         template.batchUpdate(sql, quizList, quizList.size(), (ps, quiz) -> {
 
             // PreparedStatement의 각 파라미터 설정
-            ps.setLong(1, quiz.getStudy().getId());   // Study의 ID 설정
-            ps.setBoolean(2, quiz.isCorrect());       // Correct 상태 설정
+            ps.setLong(1, quiz.getStudy().getId());
+            ps.setBoolean(2, quiz.isCorrect());
+            ps.setLong(3, quiz.getUser().getId());
         });
     }
 }
