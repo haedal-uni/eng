@@ -54,7 +54,7 @@ public class RedisConfig {
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule()); // For date/time if needed
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        //objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         objectMapper.activateDefaultTyping(
                 objectMapper.getPolymorphicTypeValidator(),  // Jackson에서 제공하는 안전한 타입 검증
                 ObjectMapper.DefaultTyping.NON_FINAL,        // 타입 정보를 비최종 클래스에만 추가

@@ -20,11 +20,11 @@ public class Word {
     private String word;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "word")
+    @OneToMany(mappedBy = "word", cascade = CascadeType.REMOVE, orphanRemoval=true)
     private List<Meaning> meaningList = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "word")
+    @OneToMany(mappedBy = "word", cascade = CascadeType.REMOVE, orphanRemoval=true)
     private List<Study> studyList = new ArrayList<>();
 
     @Builder

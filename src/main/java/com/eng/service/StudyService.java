@@ -27,6 +27,7 @@ public class StudyService {
     private final SentenceRepository sentenceRepository;
     private final RedisService redisService;
     private final WordRepository wordRepository;
+    private final JdbcRepository jdbcRepository;
 
     // 단어 가져오기(Study 테이블 저장 제거)
     @Cacheable(key = "#username", value = "getStudyWord", unless = "#result==null", cacheManager = "cacheManager")
@@ -37,7 +38,7 @@ public class StudyService {
         LocalDate today = LocalDate.now();
         User user = userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
         if(date==null || !date.isEqual(today)){ // 오늘 날짜가 아니라면 학습하지 않은 데이터 10개 조회
-            paging(user, list, 10, studyList, today);
+            findNotInStudy(user, list, 10, studyList, today);
         }else{ // 오늘 날짜라면 Study 테이블에서 조회
             List<Study> study = studyRepository.findLastDayForStudy(today); // 오늘날짜에 학습한 데이터 조회
             for(Study st : study){
@@ -52,20 +53,15 @@ public class StudyService {
                 ));
             }
             if(study.size()<10){ // 10개의 단어 중 학습하지 않은 일부 단어들 list에 추가적으로 저장
-                paging(user, list, 10-study.size(), studyList,today);
+                findNotInStudy(user, list, 10-study.size(), studyList,today);
             }
         }
         redisService.addStudyList(username, studyList);
-        for(StudyResponseDto dto : list){
-            log.info(dto.getWord());
-            log.info(dto.getMeaning());
-            log.info(dto.getSentence());
-        }
         return list;
     }
 
     // 학습할 10개의 단어 중 Study에 저장되어있지 않은 데이터 추가적으로 저장
-    private void paging(User user, List<StudyResponseDto> list, int len, List<StudyDto> studyList, LocalDate date){
+    private void findNotInStudy (User user, List<StudyResponseDto> list, int len, List<StudyDto> studyList, LocalDate date){
         Pageable pageable = PageRequest.of(0, len);
         Page<Object[]> results = meanRepository.findByMeanForStudyWithSentence(user.getId(), pageable);
         for (Object[] result : results) {
@@ -117,6 +113,12 @@ public class StudyService {
             // Study 테이블에 저장
             studyRepository.saveAll(studiesToSave);
 
+            List<Quiz> quizList = studiesToSave.stream()
+                    .map(Quiz::addQuiz)
+                            .toList();
+            // Quiz 저장
+            jdbcRepository.batchInsert(quizList);
+
             // Redis Cache 업데이트: 학습하지 않은 데이터만 갱신
             redisService.addStudyList(username, remainingCache);
 
@@ -154,6 +156,11 @@ public class StudyService {
                 ))
                 .toList();
         studyRepository.saveAll(studiesToSave);
+
+        List<Quiz> quizList = studiesToSave.stream()
+                .map(Quiz::addQuiz)
+                .toList();
+        jdbcRepository.batchInsert(quizList);
 
         // Redis cache 저장
         redisService.addStudyList(user.getUsername(), addCache);

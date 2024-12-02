@@ -19,20 +19,20 @@ public class Meaning {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = LAZY, cascade = CascadeType.REMOVE) // ON DELETE CASCADE
+    @ManyToOne(fetch = LAZY)
     @JsonIgnore
     @JoinColumn(name="word_id")
     private Word word;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "meaning")
+    @OneToMany(mappedBy = "meaning", cascade = CascadeType.REMOVE, orphanRemoval=true)
     private List<Sentence> sentenceList = new ArrayList<>();
 
     @Column(nullable = false)
     private String meaning;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "meaning")
+    @OneToMany(mappedBy = "meaning", cascade = CascadeType.REMOVE, orphanRemoval=true)
     private List<Study> studyList = new ArrayList<>();
 
     @Builder

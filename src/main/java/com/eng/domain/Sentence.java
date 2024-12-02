@@ -19,12 +19,12 @@ public class Sentence {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = LAZY, cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name="meaning_id")
     private Meaning meaning;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "sentence")
+    @OneToMany(mappedBy = "sentence", cascade = CascadeType.REMOVE, orphanRemoval=true)
     private List<Sentence> sentenceList = new ArrayList<>();
 
     @Column(nullable = false)
