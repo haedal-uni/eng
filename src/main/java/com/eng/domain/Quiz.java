@@ -19,6 +19,11 @@ public class Quiz {
     @JoinColumn(name="study_id")
     private Study study;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @Column
     private boolean correct;
 
