@@ -8,10 +8,6 @@ import java.util.List;
 
 public interface QuizRepository extends JpaRepository<Quiz, Long> {
 
-    // 랜덤으로 퀴즈
-    @Query(value = "SELECT * FROM quiz q where q.correct=false and q.user_id = :userId order by RAND() limit 5", nativeQuery = true)
-    List<Quiz> findQuizByInCorrect(Long userId);
-
     @Query(value = "select * from " +
             "(select row_number() over(order by id) r, quiz.*" +
             "from quiz " +
