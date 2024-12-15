@@ -62,23 +62,12 @@ const closeButton = document.querySelector('.btn-close'); // 모달 닫기 버�
 // 모달이 닫힐 때 localStorage에 저장하는 EventListener 추가
 studyModal.addEventListener("hidden.bs.modal", () => {
     closeButton.focus(); // 또는 document.body.focus(); 등으로 이동 가능
-
-    const now = new Date();
-    const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0); // 다음 날 자정
-    const ttl = midnight.getTime() - now.getTime(); // 밀리초 단위 남은 시간
-    setTTL(currentName, currentCard, ttl)
     if(exchange===9){
         saveStudy()
     }
 });
 
 function saveStudy(){
-    const now = new Date();
-    const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0); // 다음 날 자정
-    const ttl = midnight.getTime() - now.getTime(); // 밀리초 단위 남은 시간
-    setTTL(username+"maxPage", maxPage, ttl)
-    exchange = 3
-    setTTL(username+"exchange",exchange, ttl)
     $.ajax({
         type: "GET",
         url: `/study-words/${maxPage}/${username}`,
@@ -87,6 +76,13 @@ function saveStudy(){
         contentType: false,
         processData: false,
         success: function (response) {
+            const now = new Date();
+            const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0); // 다음 날 자정
+            const ttl = midnight.getTime() - now.getTime(); // 밀리초 단위 남은 시간
+            setTTL(username+"maxPage", maxPage, ttl)
+            exchange = 3
+            setTTL(username+"exchange",exchange, ttl)
+            setTTL(currentName, currentCard, ttl)
         }
     })
 }

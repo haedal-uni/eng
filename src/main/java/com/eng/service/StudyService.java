@@ -5,6 +5,7 @@ import com.eng.dto.StudyDto;
 import com.eng.dto.StudyResponseDto;
 import com.eng.exception.notfound.UserNotFoundException;
 import com.eng.repository.*;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
@@ -30,6 +31,7 @@ public class StudyService {
     private final JdbcRepository jdbcRepository;
 
     // 단어 가져오기(Study 테이블 저장 제거)
+    @Transactional
     @Cacheable(key = "#username", value = "getStudyWord", unless = "#result==null", cacheManager = "cacheManager")
     public List<StudyResponseDto> getStudyWord(String username) {
         List<StudyResponseDto> list = new ArrayList<>();
@@ -78,6 +80,7 @@ public class StudyService {
         }
     }
 
+    @Transactional
     public void saveStudyWord(String username, int maxPage){
         LocalDate today = LocalDate.now();
         List<StudyDto> cachedStudyList = redisService.getStudyList(username);
@@ -113,7 +116,6 @@ public class StudyService {
                     .toList();
             // Study 테이블에 저장
             studyRepository.saveAll(studiesToSave);
-
             List<Quiz> quizList = studiesToSave.stream()
                     .map(Quiz::addQuiz)
                             .toList();
