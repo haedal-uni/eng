@@ -100,10 +100,11 @@ public class StudyService {
                 studiesToSaveDto = new ArrayList<>(cachedStudyList.subList(0, endIndex));
                 remainingCache = new ArrayList<>(cachedStudyList.subList(endIndex, cachedStudyList.size()));
             }
+            User user = userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
             // DTO -> Entity 변환
             List<Study> studiesToSave = studiesToSaveDto.stream()
                     .map(dto -> Study.createStudy(
-                            userRepository.getReferenceById(dto.getUserId()),
+                            user,
                             wordRepository.getReferenceById(dto.getWordId()),
                             meanRepository.getReferenceById(dto.getMeaningId()),
                             sentenceRepository.getReferenceById(dto.getSentenceId()),
@@ -116,14 +117,9 @@ public class StudyService {
             List<Quiz> quizList = studiesToSave.stream()
                     .map(Quiz::addQuiz)
                             .toList();
-            // Quiz 저장
-            jdbcRepository.batchInsert(quizList);
-
-            // Redis Cache 업데이트: 학습하지 않은 데이터만 갱신
-            redisService.addStudyList(username, remainingCache);
-
-            // Redis 상태 업데이트
-            redisService.addMaxPage(username, maxPage);
+            jdbcRepository.saveQuizList(quizList); // Quiz 저장
+            redisService.addStudyList(username, remainingCache); // Redis Cache update 학습하지 않은 데이터만 갱신
+            redisService.addMaxPage(username, maxPage); // Redis 상태 업데이트
         }
         else {
             // 캐시가 없을 경우 데이터 생성
@@ -144,11 +140,10 @@ public class StudyService {
         }
         List<StudyDto> addStudy  = new ArrayList<>(totalStudy.subList(0, maxPage-startPage));
         List<StudyDto> addCache = new ArrayList<>(totalStudy.subList(maxPage - startPage, totalStudy.size()));
-
         // DB 저장
         List<Study> studiesToSave = addStudy.stream()
                 .map(dto -> Study.createStudy(
-                        userRepository.getReferenceById(dto.getUserId()),
+                        user,
                         wordRepository.getReferenceById(dto.getWordId()),
                         meanRepository.getReferenceById(dto.getMeaningId()),
                         sentenceRepository.getReferenceById(dto.getSentenceId()),
@@ -160,7 +155,7 @@ public class StudyService {
         List<Quiz> quizList = studiesToSave.stream()
                 .map(Quiz::addQuiz)
                 .toList();
-        jdbcRepository.batchInsert(quizList);
+        jdbcRepository.saveQuizList(quizList);
 
         // Redis cache 저장
         redisService.addStudyList(user.getUsername(), addCache);
