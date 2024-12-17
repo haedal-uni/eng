@@ -20,10 +20,13 @@ function checkFillBlank() {
         answerElement.classList.add('correct');
         answerElement.innerText = card.sentence;
         alert("정답입니다!");
-        if(chance===1){
-            quizId_List.push(quizList[quizCurrentPage]["quizId"]); // 맞춘 quiz_id 저장
-            localStorage.setItem("quizId_List",JSON.stringify(quizId_List)); // localstorage 저장
-            quizList.splice(quizCurrentPage,1); // quizList에서 정답인 quiz 삭제
+        if(chance===1){ // 한번에 정답을 맞췄을 경우
+            if(!quizId_List.includes(quizList[quizCurrentPage]["quizId"])){
+                quizId_List.push(quizList[quizCurrentPage]["quizId"]); // 맞춘 quiz_id 저장
+                localStorage.setItem("quizId_List",JSON.stringify(quizId_List)); // localstorage 저장
+                quizList.splice(quizCurrentPage,1); // quizList에서 정답인 quiz 삭제
+                quizCurrentPage-=1;
+            }
         }
     } else {
         chance = 0;
@@ -47,6 +50,9 @@ function nextFillBlank() {
 
     // 모달을 유지한 상태에서 빈칸 채우기의 내용을 업데이트
     showQuiz()
+    if(quizList.length<1){ // 1개 미만일 경우 데이터 업데이트
+        getRandomQuiz()
+    }
 }
 
 function showQuiz(){
@@ -115,18 +121,21 @@ function getRandomQuiz(){
         contentType: false,
         processData: false,
         success: function (response) {
-            console.log(JSON.stringify(response))
-            quizCurrentPage = 0;
-            quizList = response;
-            showQuiz();
-            let fillBlankModal = new bootstrap.Modal(document.getElementById('fillBlankModal'));
-            fillBlankModal.show();
+            if(response.length===0){ // 객체 빈값 확인
+                alert("quiz를 모두 맞췄습니다.")
+            }else{
+                quizCurrentPage = 0;
+                //quizList.push(...response);
+                quizList = quizList.concat(response);
+                showQuiz();
+                let fillBlankModal = new bootstrap.Modal(document.getElementById('fillBlankModal'));
+                fillBlankModal.show();
+            }
         }
     })
 }
 
 function changeCorrect(){
-    console.log(JSON.stringify({quizId_List}))
     $.ajax({
         type: "PUT",
         url: `/quiz/${username}`,
@@ -144,5 +153,7 @@ function changeCorrect(){
 const quizModal = document.getElementById("fillBlankModal");
 quizModal.addEventListener("hidden.bs.modal", () => {
     document.activeElement?.blur();
-    changeCorrect();
+    if(quizId_List.length>0){
+        changeCorrect();
+    }
 });
