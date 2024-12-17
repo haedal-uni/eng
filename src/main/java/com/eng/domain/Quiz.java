@@ -31,6 +31,7 @@ public class Quiz {
     public Quiz(Study study) {
         this.study = study;
         this.correct = false;
+        this.user = study.getUser();
     }
 
     public static Quiz addQuiz(Study study) {
