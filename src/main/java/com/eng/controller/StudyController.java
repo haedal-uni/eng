@@ -1,11 +1,10 @@
 package com.eng.controller;
 
+import com.eng.dto.StudyRequestDto;
 import com.eng.dto.StudyResponseDto;
 import com.eng.service.StudyService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,8 +18,8 @@ public class StudyController {
         return service.getStudyWord(username);
     }
 
-    @GetMapping("/study-words/{page}/{username}")
-    public void getPage(@PathVariable int page, @PathVariable String username){
-        service.saveStudyWord(username, page);
+    @PostMapping("/study-words")
+    public void saveStudyWord(@RequestBody StudyRequestDto studyRequestDto){
+        service.saveStudyWord(studyRequestDto);
     }
 }

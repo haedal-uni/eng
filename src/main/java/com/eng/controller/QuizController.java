@@ -14,7 +14,7 @@ public class QuizController {
     private final QuizService quizService;
 
     @GetMapping("/quiz/{username}")
-    public List<QuizResponseDto> quiz(@PathVariable String username) {
+    public List<QuizResponseDto> quizList(@PathVariable String username) {
         return quizService.quizList(username);
     }
 

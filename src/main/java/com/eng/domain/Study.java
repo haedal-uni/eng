@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table( // 복합 unique key 설정
-        uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "word_id","meaning_id"})
+        uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "word_id","meaning_id", "sentence_id"})
 )
 public class Study {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

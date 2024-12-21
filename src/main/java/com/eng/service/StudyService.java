@@ -2,6 +2,7 @@ package com.eng.service;
 
 import com.eng.domain.*;
 import com.eng.dto.StudyDto;
+import com.eng.dto.StudyRequestDto;
 import com.eng.dto.StudyResponseDto;
 import com.eng.exception.notfound.UserNotFoundException;
 import com.eng.repository.*;
@@ -36,13 +37,13 @@ public class StudyService {
     public List<StudyResponseDto> getStudyWord(String username) {
         List<StudyResponseDto> list = new ArrayList<>();
         List<StudyDto> studyList = new ArrayList<>();
-        LocalDate date = studyRepository.findLastDay();
-        LocalDate today = LocalDate.now();
         User user = userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
+        LocalDate date = studyRepository.findLastDay(user.getId());
+        LocalDate today = LocalDate.now();
         if(date==null || !date.isEqual(today)){ // 오늘 날짜가 아니라면 학습하지 않은 데이터 10개 조회
             findNotInStudy(user, list, 10, studyList, today);
         }else{ // 오늘 날짜라면 Study 테이블에서 조회
-            List<Study> study = studyRepository.findLastDayForStudy(today); // 오늘날짜에 학습한 데이터 조회
+            List<Study> study = studyRepository.findLastDayForStudy(today, user.getId()); // 오늘날짜에 학습한 데이터 조회
             for(Study st : study){
                 // 단어에 해당하는 예문이 중복일 수 있으므로 첫번째 조회
                 Sentence sentence = sentenceRepository.findBySentence(st.getMeaning().getId()).get(0);
@@ -81,11 +82,14 @@ public class StudyService {
     }
 
     @Transactional
-    public void saveStudyWord(String username, int maxPage){
+    public void saveStudyWord(StudyRequestDto studyRequestDto){
+        String username = studyRequestDto.getUsername();
+        int maxPage = studyRequestDto.getPage();
         LocalDate today = LocalDate.now();
         List<StudyDto> cachedStudyList = redisService.getStudyList(username);
         Integer lastPage = redisService.getMaxPage(username);
-        int startIndex = (lastPage != null) ? lastPage : studyRepository.countLastDayForStudy(today);
+        User user = userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
+        int startIndex = (lastPage != null) ? lastPage : studyRepository.countLastDayForStudy(today, user.getId());
         if(maxPage<startIndex){
             return;
         }
@@ -103,7 +107,7 @@ public class StudyService {
                 studiesToSaveDto = new ArrayList<>(cachedStudyList.subList(0, endIndex));
                 remainingCache = new ArrayList<>(cachedStudyList.subList(endIndex, cachedStudyList.size()));
             }
-            User user = userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
+
             // DTO -> Entity 변환
             List<Study> studiesToSave = studiesToSaveDto.stream()
                     .map(dto -> Study.createStudy(
