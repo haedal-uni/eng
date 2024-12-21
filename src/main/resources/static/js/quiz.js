@@ -140,7 +140,7 @@ function changeCorrect(){
         type: "PUT",
         url: `/quiz/${username}`,
         headers: {},
-        data: JSON.stringify({quizId_List}),
+        data: JSON.stringify(quizId_List),
         contentType: 'application/json',
         processData: false,
         success: function (response) {

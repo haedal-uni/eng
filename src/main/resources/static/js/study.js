@@ -68,11 +68,12 @@ studyModal.addEventListener("hidden.bs.modal", () => {
 });
 
 function saveStudy(){
+    let data = {"page" : maxPage, "username":username}
     $.ajax({
-        type: "GET",
-        url: `/study-words/${maxPage}/${username}`,
+        type: "POST",
+        url: `/study-words`,
         headers: {},
-        data: {},
+        data: JSON.stringify(data),
         contentType: false,
         processData: false,
         success: function (response) {
