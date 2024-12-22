@@ -9,6 +9,11 @@ public class HtmlController {
         return "main";
     }
 
+    @GetMapping("/my-page")
+    public String myPage(){
+        return "myPage";
+    }
+
     @GetMapping("/blue")
     public String bluePage(){
         return "blue";
