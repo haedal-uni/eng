@@ -1,0 +1,87 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #E8DFF5; /* 파스텔 톤 옅은 보라색 */
+    margin: 0;
+    padding: 0;
+}
+.container {
+    width: 90%;
+    margin: auto;
+    padding: 20px;
+}
+.profile {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.profile img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%; /* 동그란 모양 */
+    border: 3px solid #FFFFFF;
+    background-color: #FFFFFF;
+}
+.profile h2 {
+    margin: 10px 0;
+    color: #5A4B81; /* 진한 보라색 */
+}
+.card {
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 15px; /* 20 */
+    /*padding-top: 10px;*/
+    padding-bottom: 75px;
+    margin: 10px 0;
+    max-width: 390px; /* 최대 너비 제한 */
+    max-height: 390px; /* 최대 너비 제한 */
+}
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+.chart {
+    height: 200px; !important;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th, td {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #DDD;
+}
+th {
+    background-color: #5A4B81;
+    color: white;
+}
+
+
+/* 메인 페이지로 돌아가는 버튼 */
+.back-button {
+    position: absolute;
+    top: 20px;
+    /*left: 20px;*/
+    padding: 10px 20px;
+    background-color: #F4EBFF;
+    color: #5A3D99;
+    text-decoration: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+/* 버튼 hover 효과 */
+.back-button:hover {
+    background-color: #FFF8FF;
+    transform: translateY(-2px);
+}
+
+/* 버튼 active 효과 */
+.back-button:active {
+    background-color: #E8DFF5;
+    transform: translateY(0);
+}
