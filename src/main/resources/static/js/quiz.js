@@ -15,7 +15,7 @@ function checkFillBlank() {
     let userAnswer = document.getElementById('userAnswer').value.trim();
     let answerElement = document.querySelector('#fillBlankSentence');
     let showAnswerBtn = document.getElementById('showAnswerBtn'); // 정답 버튼
-
+    let showHint = document.getElementById('hintTrigger');
     if (userAnswer.toLowerCase() === card.word.toLowerCase()) {
         answerElement.classList.add('correct');
         answerElement.innerText = card.sentence;
@@ -33,6 +33,9 @@ function checkFillBlank() {
         answerElement.classList.add('incorrect');
         alert("틀렸습니다.");
         showAnswerBtn.style.display = 'inline-block'; // 틀렸을 경우 정답 버튼 보이기
+        showHint.style.display = 'inline-block';
+        const x = card.meaning.length * 28;
+        $("#hintPopup").text(card.meaning).css('width',x+'px');
     }
 }
 
@@ -45,7 +48,9 @@ function fillBlankAnswer(){
 // 빈칸 채우기 모달에서 다음 문제로 이동 시에도 같은 처리
 function nextFillBlank() {
     let showAnswerBtn = document.getElementById('showAnswerBtn');
-    showAnswerBtn.style.display = 'display: none';
+    let showHint = document.getElementById('hintTrigger');
+    showAnswerBtn.style.display = 'none';
+    showHint.style.display ='none';
     quizCurrentPage = (quizCurrentPage + 1) % quizList.length;
 
     // 모달을 유지한 상태에서 빈칸 채우기의 내용을 업데이트
@@ -65,7 +70,7 @@ function showQuiz(){
         s_word = similarWord(card, card.word);
     }
     document.getElementById('fillBlankSentence').innerHTML = card.sentence.replace(s_word, `_____`);
-    document.getElementById('fillBlankMeaning').innerText = card.meaning;
+    document.getElementById('fillBlankMeaning').innerText = card.sentence_meaning;
     document.getElementById('userAnswer').value = ""; // 입력 필드 초기화
 }
 
@@ -113,6 +118,7 @@ document.addEventListener('keydown', function (event) {
 });
 
 function getRandomQuiz(){
+    startTime = Date.now();
     $.ajax({
         type: "GET",
         url: `/quiz/${username}`,
@@ -140,7 +146,7 @@ function changeCorrect(){
         type: "PUT",
         url: `/quiz/${username}`,
         headers: {},
-        data: JSON.stringify(quizId_List),
+        data: JSON.stringify({quizId_List}),
         contentType: 'application/json',
         processData: false,
         success: function (response) {
@@ -152,6 +158,7 @@ function changeCorrect(){
 
 const quizModal = document.getElementById("fillBlankModal");
 quizModal.addEventListener("hidden.bs.modal", () => {
+    saveTime(startTime, Date.now(), "quiz");
     document.activeElement?.blur();
     if(quizId_List.length>0){
         changeCorrect();
