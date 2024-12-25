@@ -1,5 +1,6 @@
 package com.eng.controller;
 
+import com.eng.dto.LevelResponseDto;
 import com.eng.dto.MyPageRequestDto;
 import com.eng.dto.MyPageResponseDto;
 import com.eng.service.MyPageService;
@@ -20,8 +21,13 @@ public class MyPageController {
     }
 
     // 학습시간 표 결과 출력
-    @GetMapping("/my-page/{username}")
+    @GetMapping("/my-page/time/{username}")
     public List<MyPageResponseDto> get7dayTime(@PathVariable String username) {
         return myPageService.get7dayTime(username);
+    }
+
+    @GetMapping("/my-page/level/{username}")
+    public List<LevelResponseDto> getLevel(@PathVariable String username) {
+        return myPageService.getLevel(username);
     }
 }
