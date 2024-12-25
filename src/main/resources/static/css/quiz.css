@@ -1,0 +1,42 @@
+#fillBlankSentence{ /* 예문 font */
+    font-size: 20px;
+    padding-bottom: 10px;
+}
+#fillBlankMeaning{ /* 예문 뜻 font */
+    font-size: 17px;
+}
+
+.modal-title {
+    font-size: 20px;
+}
+
+.modal-header{
+    --bs-modal-header-padding: 0.8rem 1rem;
+}
+
+.hint-trigger {
+    position: absolute;
+    bottom: 30px;
+    right: 10px;
+    cursor: pointer;
+}
+
+.hint-popup {
+    display: none;
+    position: absolute;
+    bottom: 100%;
+    right: 0;
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    padding-left: 15px;
+    padding-top: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1050;
+    font-size: 17px;
+    height: 38px;
+}
+
+.hint-trigger:hover .hint-popup {
+    display: block;
+}

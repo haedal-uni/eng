@@ -2,8 +2,70 @@ let cards;
 let username = "guest"
 let maxPage = localStorage.getItem(username+"maxPage")?JSON.parse(localStorage.getItem(username+"maxPage")).value:-1;
 let exchange; // maxPage의 값이 변경되었는지 체크
+let startTime;
+
+// 학습하기 모달의 단어 표시
+function showStudyModal() {
+    updateCardDisplay()
+    let studyModal = new bootstrap.Modal(document.getElementById('studyModal'));
+    studyModal.show();
+}
+
+function updateCardDisplay() {
+    if(maxPage<currentCard){
+        maxPage = currentCard;
+        exchange=9;
+    }
+    let card = cards[currentCard];
+    document.getElementById('wordTitle').innerText = card.word;
+    document.getElementById('wordMeaning').innerText = card.meaning;
+    document.getElementById('exampleSentence').innerHTML = card.sentence;
+    document.getElementById('exampleSentence-meaning').innerHTML = card.sentence_meaning;
+
+    // 이전 버튼 숨김/표시 제어
+    let beforeButton = document.querySelector('.btn-modal.before');
+    let nextButton = document.querySelector('.btn-modal.next');
+    if (currentCard === 0) {
+        beforeButton.style.display = 'none';  // 첫 페이지에서 이전 버튼 숨기기
+    } else {
+        beforeButton.style.display = 'inline-block';  // 두 번째 페이지부터 이전 버튼 표시
+    }
+    if (currentCard === cards.length - 1) {
+        nextButton.style.display = 'none';
+    } else {
+        nextButton.style.display = 'inline-block';
+    }
+}
+
+function beforeCard(){
+    if (currentCard > 0) {
+        currentCard--;
+        updateCardDisplay();
+    }
+
+    // 모달을 유지한 상태에서 카드의 내용을 업데이트
+    let card = cards[currentCard];
+    document.getElementById('wordTitle').innerText = card.word;
+    document.getElementById('wordMeaning').innerText = card.meaning;
+    document.getElementById('exampleSentence').innerHTML = card.sentence;
+    document.getElementById('exampleSentence-meaning').innerHTML = card.sentence_meaning;
+}
+
+function nextCard() {
+    if (currentCard < cards.length - 1) {
+        currentCard++;
+        updateCardDisplay();
+    }
+    // 모달을 유지한 상태에서 카드의 내용을 업데이트
+    let card = cards[currentCard];
+    document.getElementById('wordTitle').innerText = card.word;
+    document.getElementById('wordMeaning').innerText = card.meaning;
+    document.getElementById('exampleSentence').innerHTML = card.sentence;
+    document.getElementById('exampleSentence-meaning').innerHTML = card.sentence_meaning;
+}
 
 function getStudyWords() {
+    startTime = Date.now();
     if(localStorage.getItem(username+"exchange")!=null){
         exchange = JSON.parse(localStorage.getItem(username+"exchange")).value
     }else{
@@ -61,6 +123,7 @@ const closeButton = document.querySelector('.btn-close'); // 모달 닫기 버�
 
 // 모달이 닫힐 때 localStorage에 저장하는 EventListener 추가
 studyModal.addEventListener("hidden.bs.modal", () => {
+    saveTime(startTime, Date.now(), "study");
     closeButton.focus(); // 또는 document.body.focus(); 등으로 이동 가능
     if(exchange===9){
         saveStudy()
@@ -68,12 +131,13 @@ studyModal.addEventListener("hidden.bs.modal", () => {
 });
 
 function saveStudy(){
+    let data = {"page" : maxPage, "username":username}
     $.ajax({
-        type: "GET",
-        url: `/study-words/${maxPage}/${username}`,
+        type: "POST",
+        url: `/study-words`,
         headers: {},
-        data: {},
-        contentType: false,
+        data: JSON.stringify(data),
+        contentType: 'application/json',
         processData: false,
         success: function (response) {
             const now = new Date();
