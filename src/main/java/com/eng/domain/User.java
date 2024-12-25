@@ -26,4 +26,8 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval=true)
     @JsonIgnore
     private List<Quiz> quizList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval=true)
+    @JsonIgnore
+    private List<StudyHistory> studyHistoryList = new ArrayList<>();
 }

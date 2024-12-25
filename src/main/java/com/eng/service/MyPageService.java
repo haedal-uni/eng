@@ -2,6 +2,7 @@ package com.eng.service;
 
 import com.eng.domain.StudyHistory;
 import com.eng.domain.User;
+import com.eng.dto.LevelResponseDto;
 import com.eng.dto.MyPageRequestDto;
 import com.eng.dto.MyPageResponseDto;
 import com.eng.exception.notfound.UserNotFoundException;
@@ -57,5 +58,10 @@ public class MyPageService {
                 x.getQuiz_time(),
                 x.getDate()
         )).toList();
+    }
+
+    public List<LevelResponseDto> getLevel(String username){
+        User user = userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
+        return myPageRepository.findLevelByUserId(user.getId());
     }
 }
