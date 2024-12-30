@@ -69,10 +69,18 @@ body {
 }
 
 /* 모달 */
+.modal-title {
+    font-size: 20px;
+}
+
+.modal-header{
+    --bs-modal-header-padding: 0.8rem 1rem;
+}
+
 .modal-dialog {
     max-height: 600px;
-    max-width: 600px;
-    --bs-modal-width: 600px;
+    /*max-width: 600px;*/
+    --bs-modal-width: 700px;
 }
 
 .modal-content {
@@ -91,6 +99,7 @@ body {
 .modal-body {
     font-size: 19px;
     padding: 20px;
+    --bs-modal-padding : 2rem;
 }
 
 .modal-body input {

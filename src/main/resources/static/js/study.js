@@ -9,6 +9,7 @@ function showStudyModal() {
     updateCardDisplay()
     let studyModal = new bootstrap.Modal(document.getElementById('studyModal'));
     studyModal.show();
+    speakText();
 }
 
 function updateCardDisplay() {
@@ -49,6 +50,7 @@ function beforeCard(){
     document.getElementById('wordMeaning').innerText = card.meaning;
     document.getElementById('exampleSentence').innerHTML = card.sentence;
     document.getElementById('exampleSentence-meaning').innerHTML = card.sentence_meaning;
+    speakText();
 }
 
 function nextCard() {
@@ -62,6 +64,7 @@ function nextCard() {
     document.getElementById('wordMeaning').innerText = card.meaning;
     document.getElementById('exampleSentence').innerHTML = card.sentence;
     document.getElementById('exampleSentence-meaning').innerHTML = card.sentence_meaning;
+    speakText();
 }
 
 function getStudyWords() {
@@ -97,7 +100,7 @@ function getStudyWords() {
             <button class="btn-modal before" onclick="beforeCard()">이전</button>
             <button class="btn-modal next" onclick="nextCard()">다음</button>
             `
-                $(".card-body").html(temp)
+                $(".card-body").html(temp);
                 showStudyModal();
             }
         })

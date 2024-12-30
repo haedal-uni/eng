@@ -6,14 +6,6 @@
     font-size: 17px;
 }
 
-.modal-title {
-    font-size: 20px;
-}
-
-.modal-header{
-    --bs-modal-header-padding: 0.8rem 1rem;
-}
-
 .hint-trigger {
     position: absolute;
     bottom: 30px;
