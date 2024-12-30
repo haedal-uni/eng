@@ -94,14 +94,10 @@ function levelPie(){
         contentType: false,
         processData: false,
         success: function (response) {
-            const sum = response[0].cnt+response[1].cnt + response[2].cnt;
-            response.sort( (prev, curr) => {
-                if(prev.level>curr.level) return 1;
-                if(prev.level<curr.level) return -1;
-            })
-            const count = response.map(function (e) {
-                return (e.cnt/sum*100).toFixed(1);
-            })
+            // reduce()를 활용해 전체 개수를 구한 뒤, 레벨별 데이터를 정렬하여 비율을 계산
+            const total = response.reduce((sum, level) => sum + level.cnt, 0); // (sum : 누적 반환 변수, level : 처리할 현재 요소, 처리할 현재 요소의 인덱스)
+            const sortedData = response.sort((a, b) => a.level - b.level);
+            const percentages = sortedData.map((level) => ((level.cnt / total) * 100).toFixed(1));
 
             // 학습한 예문 level
             const additionalCtx = document.getElementById('additionalChart').getContext('2d');
@@ -110,7 +106,7 @@ function levelPie(){
                 data: {
                     labels: ['Easy', 'Medium', 'Hard'],
                     datasets: [{
-                        data: count,
+                        data: percentages,
                         backgroundColor: ['#FF9999', '#FFCC99', '#99CCFF']
                     }]
                 },
