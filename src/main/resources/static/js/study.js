@@ -43,7 +43,7 @@ function beforeCard(){
         currentCard--;
         updateCardDisplay();
     }
-
+    tts_stop();
     // 모달을 유지한 상태에서 카드의 내용을 업데이트
     let card = cards[currentCard];
     document.getElementById('wordTitle').innerText = card.word;
@@ -58,6 +58,7 @@ function nextCard() {
         currentCard++;
         updateCardDisplay();
     }
+    tts_stop();
     // 모달을 유지한 상태에서 카드의 내용을 업데이트
     let card = cards[currentCard];
     document.getElementById('wordTitle').innerText = card.word;
@@ -127,6 +128,7 @@ const closeButton = document.querySelector('.btn-close'); // 모달 닫기 버�
 // 모달이 닫힐 때 localStorage에 저장하는 EventListener 추가
 studyModal.addEventListener("hidden.bs.modal", () => {
     saveTime(startTime, Date.now(), "study");
+    tts_stop();
     closeButton.focus(); // 또는 document.body.focus(); 등으로 이동 가능
     if(exchange===9){
         saveStudy()

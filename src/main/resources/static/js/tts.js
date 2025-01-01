@@ -36,3 +36,7 @@ function speakText() {
 
     synth.speak(utterance);
 }
+
+function tts_stop(){
+    synth.cancel();
+}
