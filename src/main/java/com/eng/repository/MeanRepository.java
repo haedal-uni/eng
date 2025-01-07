@@ -1,6 +1,7 @@
 package com.eng.repository;
 
 import com.eng.domain.Meaning;
+import com.eng.dto.MeaningDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,4 +22,7 @@ public interface MeanRepository extends JpaRepository<Meaning, Long> {
             "WHERE m.id NOT IN (SELECT study.meaning.id FROM Study study WHERE study.user.id = :userId) " +
             "ORDER BY m.id")
     Page<Object[]> findByMeanForStudyWithSentence(Long userId, Pageable pageable);
+
+    @Query("select new com.eng.dto.MeaningDto(m.meaning) from Meaning m where m.word.id= :wordId")
+    List<MeaningDto> findByWordApplicableMean(Long wordId);
 }
