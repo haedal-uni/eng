@@ -1,6 +1,7 @@
 package com.eng.service;
 
 import com.eng.dto.StudyDto;
+import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,10 @@ import java.util.concurrent.TimeUnit;
 @Service
 @RequiredArgsConstructor
 public class RedisService {
+    @Resource(name = "maxPageRedisTemplate")
     private final RedisTemplate<String, Integer> numTemplate;
+
+    @Resource(name="studyWordsRedisTemplate")
     private final RedisTemplate<String, List<StudyDto>> redisTemplate;
 
     public void addStudyList(String username, List<StudyDto> dto){

@@ -1,4 +1,5 @@
 let username = "guest"
+
 // 복습 우선 순위 데이터 삽입 (예시 데이터)
 const tableBody = document.getElementById('priorityTable');
 const rows = [
@@ -17,6 +18,7 @@ $(document).ready(function (){
     $("#blank-nickname").text("🏠 " + username + " 🏠");
 });
 
+// 학습 시간과 풀이 시간
 function get7dayTime() {
     $.ajax({
         type: "GET",
@@ -26,16 +28,14 @@ function get7dayTime() {
         contentType: false,
         processData: false,
         success: function (response) {
-            // 오늘 날짜 계산
-            const today = new Date();
-
-            // 요일 이름 배열
+            const today = new Date(); // 오늘 날짜 계산
             const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
             // 오늘을 기준으로 시작 요일부터 요일 순서를 재정렬
             const startIndex = today.getDay(); // 오늘의 요일 인덱스 (0: Sun ~ 6: Sat)
             let studyData= Array(7).fill(0);
             let quizData= Array(7).fill(0);
+
             for(i=0; i<response.length; i++){
                 const x = new Date(response[i].date).getDay(); // 요일 index
                 studyData.splice(x,1,((response[i].study_time)/60).toFixed(1)); // 초->분 단위
@@ -79,12 +79,7 @@ function get7dayTime() {
     })
 }
 
-function sortDate(list){
-    return list.sort(function (a, b) {
-        return new Date(a.date) - new Date(b.date);
-    });
-}
-
+// Level별 학습 비율
 function levelPie(){
     $.ajax({
         type: "GET",

@@ -2,7 +2,6 @@ package com.eng.config;
 
 import com.eng.dto.StudyDto;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,6 +15,7 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
@@ -40,6 +40,15 @@ public class RedisConfig {
     }
 
     @Bean
+    public RedisTemplate<String, List<String>> addWordRedisTemplate() {
+        RedisTemplate<String, List<String>> template = new RedisTemplate<>();
+        template.setConnectionFactory(redisConnectionFactory());
+        template.setKeySerializer(new StringRedisSerializer());
+        template.setValueSerializer(new Jackson2JsonRedisSerializer<>(List.class));
+        return template;
+    }
+
+    @Bean
     public RedisTemplate<String, Integer> maxPageRedisTemplate() {
         RedisTemplate<String, Integer> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory());
@@ -56,8 +65,8 @@ public class RedisConfig {
         objectMapper.registerModule(new JavaTimeModule()); // For date/time if needed
         //objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         objectMapper.activateDefaultTyping(
-                objectMapper.getPolymorphicTypeValidator(),  // Jackson에서 제공하는 안전한 타입 검증
-                ObjectMapper.DefaultTyping.NON_FINAL,        // 타입 정보를 비최종 클래스에만 추가
+                objectMapper.getPolymorphicTypeValidator(),  // 역직렬화 시 클래스 이름의 안전성 검사
+                ObjectMapper.DefaultTyping.NON_FINAL,        // final이 아닌 모든 클래스를 대상으로 타입 정보를 추가
                 JsonTypeInfo.As.PROPERTY                     // JSON 속성으로 타입 정보를 포함
         );
         // JSON 직렬화 설정
