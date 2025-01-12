@@ -20,7 +20,7 @@ searchInput.addEventListener("input", () => {
                     let startData = data[0];
                     Object.entries(startData).forEach(([key, values]) => {
                         const li = document.createElement('li');
-                        li.innerHTML = `${highlightMatchingText(key, query)} : ${values.join(', ')}`;
+                        li.innerHTML = `${highlightMatching(key, query)} : ${values.join(', ')}`;
                         suggestions.appendChild(li);
                     });
 
