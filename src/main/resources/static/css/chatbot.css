@@ -131,3 +131,16 @@
     background-color: #0056b3;
     transform: translateY(-2px);
 }
+
+#fixedButtons {
+    /*position: absolute;*/
+    padding: 5px;
+    margin-left: 290px;
+    display: flex;
+    gap: 10px;
+    z-index: 1000;
+}
+
+#fixedButtons.hidden {
+    display: none;
+}
