@@ -15,8 +15,13 @@ def connect(sid, environ):
 def my_message(sid, data):
     command = data.get("command")
     word = data.get("word")
-    response = nltk_command(command, word)
-    sio.emit('reply', {"response": response}, room=sid)
+    if command=="lemmatizer" :
+        pos = data.get("pos")
+        response = process_command(command, word, pos)
+    else :
+        response = process_command(command, word)
+    sio.emit('reply', {"option" : command, "response": response}, room=sid)
+
 
 @sio.event
 def disconnect(sid):

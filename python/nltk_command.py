@@ -1,4 +1,5 @@
 from nltk.corpus import wordnet as wn
+from nltk.stem import WordNetLemmatizer
 import json
 
 # 동의어
@@ -33,7 +34,12 @@ def get_pos(word):
         pos_tags.append(synset.pos())
     return list(set(pos_tags))
 
-def nltk_command(command, word):
+# 품사 알기
+def get_lemmatizer(word, pos):
+    lemmatizer = WordNetLemmatizer()
+    return list(lemmatizer.lemmatize(word, pos))
+
+def nltk_command(command, word, pos=None):
     global response
     if command == "synonyms":
         response = get_synonyms(word)
@@ -43,4 +49,6 @@ def nltk_command(command, word):
         response = get_definition(word)
     elif command == "pos":
         response = get_pos(word)
+    elif command == "lemmatizer" and pos:
+        response = get_lemmatizer(word, pos)
     return json.dumps(response)
