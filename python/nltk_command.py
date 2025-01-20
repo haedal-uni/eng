@@ -37,7 +37,7 @@ def get_pos(word):
 # 품사 알기
 def get_lemmatizer(word, pos):
     lemmatizer = WordNetLemmatizer()
-    return list(lemmatizer.lemmatize(word, pos))
+    return [lemmatizer.lemmatize(word, pos)]
 
 def nltk_command(command, word, pos=None):
     global response
