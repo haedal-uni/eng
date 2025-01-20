@@ -1,0 +1,150 @@
+#chatbotModal {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 450px;
+    height: 500px;
+    background: #d8eeff;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    display: none;
+    z-index: 9999;
+}
+
+/* Modal Content */
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Close Button */
+.close-button {
+    position: absolute;
+    top: 5px;
+    right: 20px;
+    font-size: 25px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.close-button:hover {
+    color: red;
+}
+
+/* Chat Messages */
+.chat-messages {
+    overflow-y: auto;  /* 메시지 영역에 스크롤 추가 */
+    flex-grow: 1;
+    padding: 15px;
+    display: flex;
+    gap: 15px;
+    max-height: calc(100% - 80px);
+    flex-direction: column;
+}
+
+/* Individual message styles */
+.message {
+    max-width: 70%;
+    padding: 10px;
+    border-radius: 20px;
+    font-size: 14px;
+    line-height: 1.4;
+    display: inline-block;
+}
+
+.bot-message {
+    background-color: #f8f9fa;
+    color: #333;
+    align-self: flex-start;
+}
+
+.user-message {
+    background-color: #007bff;
+    color: white;
+    align-self: flex-end;
+}
+
+/* Options Buttons */
+.options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.option-button {
+    padding: 8px 15px;
+    background-color: lavender;
+    /*color: white;*/
+    color: black;
+    border: none;
+    border-radius: 15px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.option-button:hover {
+    background-color: peachpuff;
+    transform: translateY(-2px);
+}
+
+/* Input Section */
+.input-section {
+    display: flex;
+    gap: 10px;
+    padding: 15px;
+    border-top: 1px solid #ddd;
+    position: sticky;
+    bottom: 0; /* 입력창을 화면 하단에 고정 */
+    background-color: #fff; /* 입력창 배경색 */
+}
+
+#chatInput {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    font-size: 14px;
+    outline: none;
+    transition: border 0.3s;
+}
+
+#chatInput:focus {
+    border-color: #007bff;
+}
+
+#sendBtn {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+#sendBtn:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+#fixedButtons {
+    background: ghostwhite;
+    padding: 6px;
+    font-size: 14px;
+    display: flex;
+    gap: 10px;
+    z-index: 1000;
+    padding-left: 8px;
+}
+#prevButton {
+    margin-left: 12px;
+}
+#fixedButtons.hidden {
+    display: none;
+}
