@@ -7,9 +7,7 @@ const chatInput = document.getElementById("chatInput");
 const fixedButtons = document.getElementById("fixedButtons");
 const prevButton = document.getElementById("prevButton");
 
-let currentStep = "main"; // 현재 단계: "main", "group", "detail", "lemmatizer"
-let selectedGroup = ""; // 선택된 그룹: synonyms, examples, 등
-let selectedCommand = ""; // 선택된 세부 명령
+let selectedGroup = ""; // 선택된 그룹: synonyms, examples 등 (옵션 선택)
 let selectedPOS = ""; // 선택된 품사 (lemmatizer 전용)
 let socket;
 
@@ -42,9 +40,7 @@ closeChatbot.addEventListener("click", () => {
 });
 
 function openChatBot() {
-    currentStep = "main"; // 초기화
     selectedGroup = "";
-    selectedCommand = "";
     selectedPOS = "";
     clearChatMessages();
     if (!socket) {
@@ -197,10 +193,8 @@ function handleOptionClick(command, type) {
     if (type === "main") {
         selectedGroup = command;
         if (command === "lemmatizer") {
-            currentStep = "lemmatizer-pos";
             addMessageToChat("bot", "품사를 선택해주세요:", true, "lemmatizer-pos");
         } else {
-            currentStep = "detail";
             addMessageToChat("bot", `${command}를 선택했습니다. <br>단어를 입력하세요!`, false);
         }
     } else if (type === "lemmatizer-pos") {
