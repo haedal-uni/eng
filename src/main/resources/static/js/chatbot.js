@@ -61,7 +61,6 @@ function addMessageToChat(sender, message, includeButtons = false, buttonsType =
     chatMessages.appendChild(messageDiv);
     chatMessages.scrollTop = chatMessages.scrollHeight;
 
-    console.log("button : " + buttonsType)
     if(buttonsType === "afterResponse"){
         toggleFixedButtons(true);
     }
@@ -104,7 +103,6 @@ function addOptionsButtons(type) {
 // 서버 응답 처리
 function my_messageResponse(socket) {
     socket.on("reply", function (data) {
-        console.log(data)
         let msg = "";
         try{
             if (!data.response || JSON.parse(data.response).length === 0 || data.response[0] === "") {
@@ -123,7 +121,6 @@ function my_messageResponse(socket) {
                     if(JSON.parse(data.response).length>1){
                         let i = 1;
                         JSON.parse(data.response).forEach((response) => {
-                            console.log(response)
                             msg+=(i + ". ")
                             msg+=response;
                             msg+=`<br><br>`;
