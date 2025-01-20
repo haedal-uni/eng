@@ -4,16 +4,14 @@ const closeChatbot = document.getElementById("closeChatbot");
 const chatMessages = document.getElementById("chatMessages");
 const sendBtn = document.getElementById("sendBtn");
 const chatInput = document.getElementById("chatInput");
+const fixedButtons = document.getElementById("fixedButtons");
+const prevButton = document.getElementById("prevButton");
 
 let currentStep = "main"; // 현재 단계: "main", "group", "detail", "lemmatizer"
 let selectedGroup = ""; // 선택된 그룹: synonyms, examples, 등
 let selectedCommand = ""; // 선택된 세부 명령
 let selectedPOS = ""; // 선택된 품사 (lemmatizer 전용)
 let socket;
-
-
-const fixedButtons = document.getElementById("fixedButtons");
-const prevButton = document.getElementById("prevButton");
 
 // "이전으로 돌아가기" 버튼 동작
 prevButton.addEventListener("click", () => {
