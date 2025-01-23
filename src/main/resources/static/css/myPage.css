@@ -85,3 +85,25 @@ th {
     background-color: #E8DFF5;
     transform: translateY(0);
 }
+
+.img-button{
+    border: 1px solid #DDD;
+    border-radius: 5px;
+    margin-left: 50px;
+    background-color: #F4EBFF;
+    color: #5A3D99;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    font-size: 15px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+/* 버튼 hover 효과 */
+.img-button:hover {
+    background-color: #FFF8FF;
+    transform: translateY(-2px);
+}
+
+/* 버튼 active 효과 */
+.img-button:active {
+    background-color: #E8DFF5;
+    transform: translateY(0);
+}
