@@ -112,3 +112,30 @@ function levelPie(){
         }
     })
 }
+
+function levelPieIMG(){
+    const url = `http://127.0.0.1:5000/my-page/level/image/${username}`; // Flask 서버 URL
+    $.ajax({
+        type: "GET",
+        url: url,
+        xhrFields: {
+            responseType: 'blob'
+        },
+        success: function (response) {
+            const imgBlob = new Blob([response], { type: 'image/png' });
+            const imgURL = URL.createObjectURL(imgBlob);
+
+            const newWindow = window.open("", "_blank", "width=640,height=480");
+            const imgElement = newWindow.document.createElement("img");
+            imgElement.src = imgURL;
+            imgElement.alt = "Level Pie Chart";
+
+            newWindow.document.body.appendChild(imgElement);
+
+            // window.URL.revokeObjectURL(imgURL);
+        },
+        error: function (err) {
+            console.error("이미지를 로드하는 중 오류가 발생했습니다.");
+        }
+    })
+}

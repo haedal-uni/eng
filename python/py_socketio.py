@@ -2,10 +2,17 @@ import socketio
 from flask import Flask
 from src.nltk_command import nltk_command
 import eventlet
+from flask_cors import CORS
+from src.py_mysql import levelPie
 
 sio = socketio.Server(cors_allowed_origins="*")
 app = Flask(__name__)
+CORS(app, resources={r"/my-page/*": {"origins": "*"}})
 app.wsgi_app = socketio.WSGIApp(sio, app.wsgi_app)
+
+@app.route('/my-page/level/image/<username>', methods=['GET'])
+def level_pie_image(username):
+    return levelPie(username)
 
 @sio.event
 def connect(sid, environ):
