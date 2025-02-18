@@ -1,12 +1,13 @@
 import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
 data = pd.read_csv('../../../kaggle/StudentPerformanceFactors.csv')
 data = data[data["Exam_Score"] <= 100]
 
 correlation = data['Hours_Studied'].corr(data['Exam_Score'])
 print(f"공부 시간과 시험 점수 간의 Pearson 상관계수: {correlation}")
 
-import matplotlib.pyplot as plt
-import seaborn as sns
 sns.lmplot(x='Hours_Studied', y='Exam_Score', data=data)
 plt.show()
 
@@ -16,8 +17,8 @@ observed = pd.crosstab(data['study_time'], data['exam'])
 
 # 적합도
 expected = chi2_contingency(observed)[3]
-small_cells = (expected < 5).sum()
-percentage = (small_cells / expected.size) * 100
+cell = (expected < 5).sum()
+percentage = (cell / expected.size) * 100
 if percentage >= 25:
     print("카이제곱 검정을 적용x")
 
