@@ -45,7 +45,7 @@ print(f"기대 빈도표: \n{expected}")
 # 기대 빈도 중 5 미만 셀 개수 확인
 cell = (expected < 5).sum()
 percentage = (cell / expected.size) * 100
-if percentage > 19:
+if percentage >= 20:
     print("카이제곱 검정 사용 불가능")
 else :
     print("카이제곱 검정 사용 가능")
