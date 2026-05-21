@@ -1,3 +1,8 @@
+## ERD
+<img src="https://github.com/user-attachments/assets/a77210c1-69c5-4a41-b9a8-722788bc9d2d" />
+
+<br>
+
 ## Wiki
 [Wiki](https://github.com/haedal-uni/eng/wiki) 에 프로젝트에 관한 정보 확인 가능
 
