@@ -1,207 +1,97 @@
-body {
-    background-color: #f0f4f7;
-    font-family: "Poor Story", system-ui;
-    font-weight: 500;
-    font-style: normal;
-}
-
 /* font */
 .english-text {
-    font-family: "Roboto", sans-serif;
-    font-weight: 500;
-    font-style: normal;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
 }
-
 .korean-text {
-    font-family: 'Arial', sans-serif;
-    font-size: 17px;
-}
-
-.main-container {
-    max-width: 600px;
-    margin: 40px auto;
-    text-align: center;
-    background: #fff5f5;
-    border-radius: 20px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    padding: 40px;
-}
-
-.main-container h1 {
-    margin-bottom: 50px;
-    color: #ff6f61;
-    font-weight: bold;
-    font-size: 28px;
-}
-
-/* 검색 창 */
-.search-box {
-    margin-bottom: 30px;
-    padding: 12px;
-    border-radius: 20px;
-    font-size: 16px;
-    background-color: #fff0f0;
-    border: 3px solid white;
-    width: 500px;
-    outline: none;
-}
-
-/* 검색창에 커서가 올라오거나 클릭될 때의 스타일 */
-.search-box:focus {
-    background-color: #fff0f0;/* 배경색 */
-    border-color: floralwhite;/* 테두리색 */
-}
-
-.btn-custom {
-    width: 100%;
-    margin: 20px 0;
-    padding: 15px;
-    border-radius: 25px;
-    font-weight: bold;
-    font-size: 18px;
-    background-color: #ffb6b9;
-    color: white;
-    border: none;
-}
-
-.btn-custom:hover {
-    background-color: #ff6f61;
+  font-family: 'Arial', sans-serif;
+  font-size: 17px;
 }
 
 /* 모달 */
-.modal-title {
-    font-size: 20px;
-}
-
-.modal-header{
-    --bs-modal-header-padding: 0.8rem 1rem;
-}
-
+.modal-title { font-size: 20px; }
+.modal-header { --bs-modal-header-padding: 0.8rem 1rem; }
 .modal-dialog {
-    max-height: 600px;
-    /*max-width: 600px;*/
-    --bs-modal-width: 700px;
+  max-height: 600px;
+  --bs-modal-width: 700px;
 }
-
 .modal-content {
-    border-radius: 20px;
-    border: none;
-    background-color: #ffebf0;
+  border-radius: 20px;
+  border: none;
+  background-color: #ffebf0;
 }
-
 .modal-header {
-    background-color: #ff6f61;
-    color: white;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
+  background-color: #ff6f61;
+  color: white;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
 }
-
 .modal-body {
-    font-size: 19px;
-    padding: 20px;
-    --bs-modal-padding : 2rem;
+  font-size: 19px;
+  padding: 20px;
+  --bs-modal-padding: 2rem;
 }
-
 .modal-body input {
-    margin-bottom: 25px;
-    padding: 12px;
-    border-radius: 10px;
-    border: 1px solid #ffb6b9;
+  margin-bottom: 25px;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ffb6b9;
 }
 
+/* 모달 내 버튼 */
 .btn-modal {
-    padding: 12px 20px;
-    border-radius: 25px;
-    font-weight: bold;
-    font-size: 16px;
-    background-color: #ffb6b9;
-    color: white;
-    border: none;
-    margin-top: 20px; /* 버튼 사이 간격 조정 */
-    margin-bottom: 10px; /* 버튼 아래 간격 조정 */
-    margin-right: 10px;
+  padding: 12px 20px;
+  border-radius: 25px;
+  font-weight: bold;
+  font-size: 16px;
+  background-color: #ffb6b9;
+  color: white;
+  border: none;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  cursor: pointer;
 }
+.btn-modal:hover { background-color: #ff6f61; }
+.btn-close { color: white; }
 
-.btn-modal:hover {
-    background-color: #ff6f61;
-}
+/* 카드 */
+.card { margin-bottom: 30px; }
+.card-body { padding: 20px; }
+.card-title { margin-bottom: 20px; }
+.card-text { margin-bottom: 20px; }
 
-.btn-close {
-    color: white;
-}
-
-/* 모달 카드 */
-.card {
-    margin-bottom: 30px;
-}
-
-.card-body {
-    padding: 20px; /* 카드 내용 padding 조정 */
-}
-
-.card-title {
-    margin-bottom: 20px; /* 단어와 뜻 사이 간격 조정 */
-}
-
-.card-text {
-    margin-bottom: 20px; /* 뜻과 예문 사이 간격 조정 */
-}
-
-/* 오른쪽 하단 플로팅 메뉴 */
-.floating-menu {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 1000;
-}
-
-.floating-btn, .circle-btn {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    cursor: pointer;
-    transition: all 0.3s;
-    font-size: 24px;
-    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
-}
-
-/* 기본 플로팅 버튼 */
+/* 플로팅 버튼 */
 .floating-button-container {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1000;
 }
-
 .floating-button {
-    background-color: lavenderblush;
-    color: black;
-    border: none;
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    margin: 10px 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    transition: all 0.3s ease;
+  background-color: lavenderblush;
+  color: black;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  margin: 8px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
 }
-
 .floating-button:hover {
-    background-color: lavender;
-    transform: scale(1.1);
+  background-color: lavender;
+  transform: scale(1.1);
 }
 
 /* 파일 업로드 숨기기 */
-.file-upload-input {
-    display: none;
-}
+.file-upload-input { display: none; }

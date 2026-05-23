@@ -36,21 +36,26 @@ public class Sentence {
     @Column
     private int level;
 
+    @Column(nullable = false)
+    private String quiz_type;
+
     @Builder
-    private Sentence(Meaning meaning, String sentence, String sentence_meaning, int level) {
+    private Sentence(Meaning meaning, String sentence, String sentence_meaning, int level, String quiz_type) {
         this.meaning = meaning;
         this.sentence = sentence;
         this.sentence_meaning = sentence_meaning;
         this.level = level;
+        this.quiz_type = quiz_type;
         meaning.getSentenceList().add(this);
     }
 
-    public static Sentence createSentence(Meaning meaning, String sentence, String sentence_meaning, int level) {
+    public static Sentence createSentence(Meaning meaning, String sentence, String sentence_meaning, int level, String quiz_type) {
         return Sentence.builder()
                 .meaning(meaning)
                 .sentence(sentence)
                 .sentence_meaning(sentence_meaning)
                 .level(level)
+                .quiz_type(quiz_type)
                 .build();
     }
 }

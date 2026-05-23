@@ -1,109 +1,119 @@
+/* ===== 기존 myPage.css (레거시 클래스 유지) ===== */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #E8DFF5; /* 파스텔 톤 옅은 보라색 */
-    margin: 0;
-    padding: 0;
+  font-family: 'Poor Story', Arial, sans-serif;
+  background-color: #E8DFF5;
+  margin: 0;
+  padding: 0;
 }
 .container {
-    width: 90%;
-    margin: auto;
-    padding: 20px;
+  width: 90%;
+  margin: auto;
+  padding: 20px;
 }
 .profile {
-    text-align: center;
-    margin-bottom: 20px;
+  text-align: center;
+  margin-bottom: 20px;
 }
 .profile img {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%; /* 동그란 모양 */
-    border: 3px solid #FFFFFF;
-    background-color: #FFFFFF;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 3px solid #FFFFFF;
+  background-color: #FFFFFF;
 }
 .profile h2 {
-    margin: 10px 0;
-    color: #5A4B81; /* 진한 보라색 */
+  margin: 10px 0;
+  color: #5A4B81;
 }
 .card {
-    background-color: #FFFFFF;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 15px; /* 20 */
-    /*padding-top: 10px;*/
-    padding-bottom: 75px;
-    margin: 10px 0;
-    max-width: 390px; /* 최대 너비 제한 */
-    max-height: 390px; /* 최대 너비 제한 */
+  background-color: #FFFFFF;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  padding-bottom: 75px;
+  margin: 10px 0;
+  max-width: 390px;
+  max-height: 390px;
 }
 .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
 }
 .chart {
-    height: 200px; !important;
+  height: 200px !important;
 }
 table {
-    width: 100%;
-    border-collapse: collapse;
+  width: 100%;
+  border-collapse: collapse;
 }
 th, td {
-    text-align: left;
-    padding: 8px;
-    border-bottom: 1px solid #DDD;
+  text-align: left;
+  padding: 8px;
+  border-bottom: 1px solid #DDD;
 }
 th {
-    background-color: #5A4B81;
-    color: white;
+  background-color: #5A4B81;
+  color: white;
 }
-
 
 /* 메인 페이지로 돌아가는 버튼 */
 .back-button {
-    position: absolute;
-    top: 20px;
-    /*left: 20px;*/
-    padding: 10px 20px;
-    background-color: #F4EBFF;
-    color: #5A3D99;
-    text-decoration: none;
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: bold;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s, transform 0.2s;
+  position: absolute;
+  top: 20px;
+  padding: 10px 20px;
+  background-color: #F4EBFF;
+  color: #5A3D99;
+  text-decoration: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s, transform 0.2s;
 }
-
-/* 버튼 hover 효과 */
 .back-button:hover {
-    background-color: #FFF8FF;
-    transform: translateY(-2px);
+  background-color: #FFF8FF;
+  transform: translateY(-2px);
 }
-
-/* 버튼 active 효과 */
 .back-button:active {
-    background-color: #E8DFF5;
-    transform: translateY(0);
+  background-color: #E8DFF5;
+  transform: translateY(0);
 }
 
-.img-button{
-    border: 1px solid #DDD;
-    border-radius: 5px;
-    margin-left: 50px;
-    background-color: #F4EBFF;
-    color: #5A3D99;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    font-size: 15px;
-    transition: background-color 0.3s, transform 0.2s;
+/* img 버튼 */
+.img-button {
+  border: 1px solid #DDD;
+  border-radius: 5px;
+  margin-left: 50px;
+  background-color: #F4EBFF;
+  color: #5A3D99;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  font-size: 15px;
+  transition: background-color 0.3s, transform 0.2s;
 }
-/* 버튼 hover 효과 */
 .img-button:hover {
-    background-color: #FFF8FF;
-    transform: translateY(-2px);
+  background-color: #FFF8FF;
+  transform: translateY(-2px);
+}
+.img-button:active {
+  background-color: #E8DFF5;
+  transform: translateY(0);
 }
 
-/* 버튼 active 효과 */
-.img-button:active {
-    background-color: #E8DFF5;
-    transform: translateY(0);
+/* ===== Tailwind에서 가져온 card-hover 애니메이션 (순수 CSS 버전) ===== */
+.card-hover {
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(90, 75, 129, 0.14);
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+.cursor {
+  display: inline-block;
+  animation: blink 1s infinite;
 }

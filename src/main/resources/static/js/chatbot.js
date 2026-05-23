@@ -13,153 +13,124 @@ let socket;
 
 // "이전으로 돌아가기" 버튼 동작
 prevButton.addEventListener("click", () => {
-    addOptionsButtons("main");
-    fixedButtons.classList.add("hidden");
+  addOptionsButtons("main");
+  fixedButtons.classList.add("hidden");
 });
 
 function toggleFixedButtons(visible) {
-    if (visible) {
-        fixedButtons.classList.remove("hidden");
-    } else {
-        fixedButtons.classList.add("hidden");
-    }
+  if (visible) fixedButtons.classList.remove("hidden");
+  else fixedButtons.classList.add("hidden");
 }
 
 chatbotOpenBtn.addEventListener("click", () => {
-    chatbotModal.classList.remove("hidden");
-    chatbotModal.style.display = "flex";
-    openChatBot();
+  chatbotModal.classList.remove("hidden");
+  chatbotModal.style.display = "flex";
+  openChatBot();
 });
 
 // 닫기 버튼 클릭 시 모달 숨기기
 closeChatbot.addEventListener("click", () => {
-    chatbotModal.style.display = "none";
-    if (socket) {
-        console.log("Disconnected");
-    }
+  chatbotModal.style.display = "none";
 });
 
 function openChatBot() {
-    selectedGroup = "";
-    selectedPOS = "";
-    clearChatMessages();
-    if (!socket) {
-        socket = io.connect("http://localhost:5000");
-        my_messageResponse(socket);
-    }
-    addMessageToChat("bot", "환영합니다! 아래 옵션을 선택해주세요:", true);
+  selectedGroup = "";
+  selectedPOS = "";
+  clearChatMessages();
+  if (!socket) {
+    socket = io.connect("http://localhost:5000");
+    my_messageResponse(socket);
+  }
+  addMessageToChat("bot", "환영합니다! 아래 옵션을 선택해주세요:", true);
 }
 
 function addMessageToChat(sender, message, includeButtons = false, buttonsType = "main") {
-    const messageDiv = document.createElement("div");
-    messageDiv.classList.add("message", `${sender}-message`);
-    messageDiv.innerHTML = `${message}`;
-    chatMessages.appendChild(messageDiv);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
+  const messageDiv = document.createElement("div");
+  messageDiv.classList.add("message", `${sender}-message`);
+  messageDiv.innerHTML = message;
+  chatMessages.appendChild(messageDiv);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
 
-    if(buttonsType === "afterResponse"){
-        toggleFixedButtons(true);
-    }
-    if (includeButtons) {
-        addOptionsButtons(buttonsType);
-    }
+  if (buttonsType === "afterResponse") toggleFixedButtons(true);
+  if (includeButtons) addOptionsButtons(buttonsType);
 }
 
 function addOptionsButtons(type) {
-    const messageDiv = document.createElement("div");
-    messageDiv.classList.add("message", "bot-message");
-    messageDiv.innerHTML = `<p>옵션을 선택하세요:</p>`;
+  const messageDiv = document.createElement("div");
+  messageDiv.classList.add("message", "bot-message");
+  messageDiv.innerHTML = `<p>옵션을 선택하세요:</p>`;
 
-    const optionsDiv = document.createElement("div");
-    optionsDiv.classList.add("options");
+  const optionsDiv = document.createElement("div");
+  optionsDiv.classList.add("options");
 
-    let options = [];
-    if (type === "main") {
-        // 메인 옵션: 전체 기능 그룹
-        options = ["synonyms", "examples", "definition", "pos", "lemmatizer"];
-    } else if (type === "lemmatizer-pos") {
-        // lemmatizer 품사 옵션
-        options = ["n", "v", "a", "s", "r"];
-    }
+  let options = type === "main"
+    ? ["synonyms", "examples", "definition", "pos", "lemmatizer"]
+    : ["n", "v", "a", "s", "r"];
 
-    options.forEach(option => {
-        const optionButton = document.createElement("button");
-        optionButton.classList.add("option-button");
-        optionButton.textContent = getButton(option);
-        optionButton.setAttribute("data-command", option);
+  options.forEach(option => {
+    const btn = document.createElement("button");
+    btn.classList.add("option-button");
+    btn.textContent = getButton(option);
+    btn.setAttribute("data-command", option);
+    btn.addEventListener("click", () => handleOptionClick(option, type));
+    optionsDiv.appendChild(btn);
+  });
 
-        optionButton.addEventListener("click", () => handleOptionClick(option, type));
-        optionsDiv.appendChild(optionButton);
-    });
-    messageDiv.appendChild(optionsDiv);
-    chatMessages.appendChild(messageDiv);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
+  messageDiv.appendChild(optionsDiv);
+  chatMessages.appendChild(messageDiv);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
-// 서버 응답 처리
 function my_messageResponse(socket) {
-    socket.on("reply", function (data) {
-        let msg = "";
-        try{
-            if (!data.response || JSON.parse(data.response).length === 0 || data.response[0] === "") {
-                addMessageToChat("bot", "결과를 찾을 수 없습니다. <br>다른 단어를 입력해주세요.", false, "afterResponse");
-            } else {
-                let option = data.option
-                const pos_list = {"n":"명사", "v":"동사", "r" : "부사", "a":"형용사", "s": "adjective satellite"}
-                if(option==="pos"){
-                    for(let i = 0; i<JSON.parse(data.response).length; i++){
-                        msg+=pos_list[JSON.parse(data.response)[i]];
-                        if(i!==JSON.parse(data.response).length-1){
-                            msg+=", "
-                        }
-                    }
-                }else{
-                    if(JSON.parse(data.response).length>1){
-                        let i = 1;
-                        JSON.parse(data.response).forEach((response) => {
-                            msg+=(i + ". ")
-                            msg+=response;
-                            msg+=`<br><br>`;
-                            i++;
-                        });
-                    }else{
-                        msg+=JSON.parse(data.response);
-                    }
-                }
-                addMessageToChat("bot", msg, false, "afterResponse");
-            }
-        }catch (error){
-            console.error("Error parsing response:", error);
-            addMessageToChat("bot", "결과를 처리할 수 없습니다.", false);
+  socket.on("reply", function (data) {
+    let msg = "";
+    try {
+      if (!data.response || JSON.parse(data.response).length === 0 || data.response[0] === "") {
+        addMessageToChat("bot", "결과를 찾을 수 없습니다. <br>다른 단어를 입력해주세요.", false, "afterResponse");
+      } else {
+        let option = data.option;
+        const pos_list = { "n": "명사", "v": "동사", "r": "부사", "a": "형용사", "s": "adjective satellite" };
+        if (option === "pos") {
+          msg = JSON.parse(data.response).map(p => pos_list[p]).join(", ");
+        } else {
+          const res = JSON.parse(data.response);
+          if (res.length > 1) {
+            res.forEach((r, i) => { msg += `${i + 1}. ${r}<br><br>`; });
+          } else {
+            msg = res[0];
+          }
         }
-    });
+        addMessageToChat("bot", msg, false, "afterResponse");
+      }
+    } catch (error) {
+      console.error("Error parsing response:", error);
+      addMessageToChat("bot", "결과를 처리할 수 없습니다.", false);
+    }
+  });
 }
-
 
 function clearChatMessages() {
-    chatMessages.innerHTML = "";
+  chatMessages.innerHTML = "";
 }
 
-// 메시지 전송
 sendBtn.addEventListener("click", () => {
-    const message = chatInput.value.trim();
+  const message = chatInput.value.trim();
+  if (!message) return;
 
-    if (message) {
-        if (selectedGroup === "lemmatizer") {
-            if (!selectedPOS) {
-                addMessageToChat("bot", "품사를 선택하고 메시지를 입력하세요.", false);
-                return; // 동작 중단
-            }
-            socket.emit("my_message", {command: selectedGroup, word: message, pos: selectedPOS});
-        } else if (selectedGroup) {
-            socket.emit("my_message", {command: selectedGroup, word: message});
-        } else {
-            addMessageToChat("bot", "옵션을 선택하고 메시지를 입력하세요.", false);
-            return;
-        }
-        addMessageToChat("user", message);
-        chatInput.value = "";
+  if (selectedGroup === "lemmatizer") {
+    if (!selectedPOS) {
+      addMessageToChat("bot", "품사를 선택하고 메시지를 입력하세요.", false);
+      return;
     }
+    socket.emit("my_message", { command: selectedGroup, word: message, pos: selectedPOS });
+  } else if (selectedGroup) {
+    socket.emit("my_message", { command: selectedGroup, word: message });
+  } else {
+    addMessageToChat("bot", "옵션을 선택하고 메시지를 입력하세요.", false);
+    return;
+  }
+  addMessageToChat("user", message);
+  chatInput.value = "";
 });
 
 // 'Enter' 키를 누르면 send 버튼 클릭처럼 동작하도록 처리
