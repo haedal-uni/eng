@@ -51,8 +51,9 @@ public class StudyService {
                         st.getWord().getWord(),
                         st.getMeaning().getMeaning(),
                         sentence.getSentence(),
-                        sentence.getSentence_meaning(),
-                        sentence.getLevel()
+                        sentence.getSentenceMeaning(),
+                        sentence.getLevel(),
+                        sentence.getQuizType()
                 ));
             }
             if(study.size()<10){ // 10개의 단어 중 학습하지 않은 일부 단어들 list에 추가적으로 저장
@@ -75,8 +76,9 @@ public class StudyService {
                     meaning.getWord().getWord(),
                     meaning.getMeaning(),
                     sentence.getSentence(),
-                    sentence.getSentence_meaning(),
-                    sentence.getLevel()
+                    sentence.getSentenceMeaning(),
+                    sentence.getLevel(),
+                    sentence.getQuizType()
             ));
         }
     }

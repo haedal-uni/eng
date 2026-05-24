@@ -84,7 +84,7 @@ function getStudyWords() {
 // 만료 시간 설정 (하루에서 남은 시간)
 function setTTL(key, value, ttl) {
   const expiry = Date.now() + ttl;
-  localStorage.setItem(key, JSON.stringify({ value, expiry }));
+  localStorage.setItem(key, JSON.stringify({value, expiry}));
 }
 
 let currentName = username + "NowPage";
@@ -102,7 +102,7 @@ studyModal.addEventListener("hidden.bs.modal", () => {
 });
 
 function saveStudy() {
-  let data = { "page": maxPage, "username": username };
+  let data = {"page": maxPage, "username": username};
   $.ajax({
     type: "POST",
     url: `/study-words`,

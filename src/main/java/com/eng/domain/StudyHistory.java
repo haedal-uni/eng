@@ -25,31 +25,33 @@ public class StudyHistory {
     private LocalDate date;
 
     @Column
-    private Long study_time; // 학습 시간(s)
+    private Long studyTime; // 학습 시간(s)
 
     @Column
-    private Long quiz_time; // 퀴즈 풀이 시간(s)
+    private Long quizTime; // 퀴즈 풀이 시간(s)
 
-    public void addStudy_time(Long time) {
-        this.study_time = time;
+    public void addStudyTime(Long time) {
+        this.studyTime = time;
     }
-    public void addQuiz_time(Long time) {
-        this.quiz_time = time;
+
+    public void addQuizTime(Long time) {
+        this.quizTime = time;
     }
+
     @Builder
-    private StudyHistory(User user, LocalDate date, Long study_time, Long quiz_time) {
+    private StudyHistory(User user, LocalDate date, Long studyTime, Long quizTime) {
         this.user = user;
         this.date = date;
-        this.study_time = study_time;
-        this.quiz_time = quiz_time;
+        this.studyTime = studyTime;
+        this.quizTime = quizTime;
     }
 
-    public static StudyHistory addStudyHistory(User user, LocalDate date, Long study_time, Long quiz_time) {
+    public static StudyHistory addStudyHistory(User user, LocalDate date, Long studyTime, Long quizTime) {
         return StudyHistory.builder()
                 .user(user)
                 .date(date)
-                .study_time(study_time)
-                .quiz_time(quiz_time)
+                .studyTime(studyTime)
+                .quizTime(quizTime)
                 .build();
     }
 }

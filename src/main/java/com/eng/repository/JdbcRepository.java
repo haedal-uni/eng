@@ -24,7 +24,7 @@ public class JdbcRepository {
 
     public void updateCorrect(QuizRequestDto quizIdList) {
         String sql = "UPDATE quiz SET correct = true WHERE quiz.id=?";
-        template.batchUpdate(sql, quizIdList.getQuizId_List(), quizIdList.getQuizId_List().size(), (qz, quizId) ->{
+        template.batchUpdate(sql, quizIdList.getQuizIdList(), quizIdList.getQuizIdList().size(), (qz, quizId) ->{
             qz.setLong(1, quizId);
                 });
     }
