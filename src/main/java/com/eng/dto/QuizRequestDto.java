@@ -6,5 +6,5 @@ import java.util.List;
 
 @Getter
 public class QuizRequestDto {
-    private List<Long> quizId_List;
+    private List<Long> quizIdList;
 }

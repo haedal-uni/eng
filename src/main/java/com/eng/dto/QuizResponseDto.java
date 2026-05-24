@@ -26,8 +26,9 @@ public class QuizResponseDto {
                                 study.getWord().getWord(),
                                 study.getMeaning().getMeaning(),
                                 study.getSentence().getSentence(),
-                                study.getSentence().getSentence_meaning(),
-                                study.getSentence().getLevel()
+                                study.getSentence().getSentenceMeaning(),
+                                study.getSentence().getLevel(),
+                                study.getSentence().getQuizType()
                         )
                 )
                 .build();
