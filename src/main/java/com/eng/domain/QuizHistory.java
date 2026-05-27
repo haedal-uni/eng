@@ -28,22 +28,22 @@ public class QuizHistory {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column
+    @Column(nullable = false)
     private String quizType;
 
-    @Column
+    @Column(nullable = false)
     private boolean correct;
 
-    @Column
+    @Column(nullable = false)
     private String word;
 
-    @Column
+    @Column(nullable = false)
     private String quizSentence;
 
     @Column
     private String userAnswer;
 
-    @Column
+    @Column(nullable = false)
     private Double responseTime;
 
     @CreatedDate

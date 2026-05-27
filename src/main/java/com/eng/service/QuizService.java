@@ -30,11 +30,11 @@ public class QuizService {
     private final JdbcRepository jdbcRepository;
     private final QuizHistoryRepository quizHistoryRepository;
 
-    public List<QuizResponseDto> quizList(String username){
+    public List<QuizResponseDto> quizList(String username) {
         User user = userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
         List<QuizResponseDto> list = new ArrayList<>();
         List<Quiz> randomQuiz = quizRepository.findRandomQuiz(user.getId());
-        for(Quiz quiz : randomQuiz){
+        for (Quiz quiz : randomQuiz) {
             Study study = quiz.getStudy();
             list.add(QuizResponseDto.of(quiz, study));
         }
@@ -42,13 +42,13 @@ public class QuizService {
     }
 
     @Transactional
-    public void quiz_correct(QuizRequestDto quizIds){
-        log.info("correct=true 총 개수 : {} ",quizIds.getQuizIdList().size());
+    public void quiz_correct(QuizRequestDto quizIds) {
+        log.info("correct=true 총 개수 : {} ", quizIds.getQuizIdList().size());
         jdbcRepository.updateCorrect(quizIds);
     }
 
     @Transactional
-    public void saveQuizHistory(QuizHistoryRequestDto dto){
+    public void saveQuizHistory(QuizHistoryRequestDto dto) {
         User user = userRepository.findByUsername(dto.getUsername()).orElseThrow(UserNotFoundException::new);
         Quiz quiz = quizRepository.findById(dto.getQuizId()).orElseThrow(QuizNotFoundException::new);
         QuizHistory quizHistory = QuizHistory.builder()

@@ -22,9 +22,9 @@ public class MyPageResponseDto {
 
     public static MyPageResponseDto of(Long study_time, Long quiz_time, LocalDate date) {
         return MyPageResponseDto.builder()
-                .study_time(study_time)
-                .quiz_time(quiz_time)
-                .date(date)
-                .build();
+            .study_time(study_time)
+            .quiz_time(quiz_time)
+            .date(date)
+            .build();
     }
 }
