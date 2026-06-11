@@ -14,6 +14,9 @@ public enum ErrorCode {
     // Study
     STUDY_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 학습 목록을 찾을 수 없습니다."),
 
+    // Quiz
+    QUIZ_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 퀴즈 목록을 찾을 수 없습니다."),
+
     // db
     DATABASE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "데이터베이스 에러");
 

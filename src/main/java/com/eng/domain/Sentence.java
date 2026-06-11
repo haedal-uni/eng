@@ -31,26 +31,31 @@ public class Sentence {
     private String sentence;
 
     @Column(nullable = false)
-    private String sentence_meaning;
+    private String sentenceMeaning;
 
     @Column
     private int level;
 
+    @Column(nullable = false)
+    private String quizType;
+
     @Builder
-    private Sentence(Meaning meaning, String sentence, String sentence_meaning, int level) {
+    private Sentence(Meaning meaning, String sentence, String sentenceMeaning, int level, String quizType) {
         this.meaning = meaning;
         this.sentence = sentence;
-        this.sentence_meaning = sentence_meaning;
+        this.sentenceMeaning = sentenceMeaning;
         this.level = level;
+        this.quizType = quizType;
         meaning.getSentenceList().add(this);
     }
 
-    public static Sentence createSentence(Meaning meaning, String sentence, String sentence_meaning, int level) {
+    public static Sentence createSentence(Meaning meaning, String sentence, String sentenceMeaning, int level, String quizType) {
         return Sentence.builder()
                 .meaning(meaning)
                 .sentence(sentence)
-                .sentence_meaning(sentence_meaning)
+                .sentenceMeaning(sentenceMeaning)
                 .level(level)
+                .quizType(quizType)
                 .build();
     }
 }

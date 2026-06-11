@@ -112,6 +112,7 @@ public class ExcelService {
             String sentence = row.getCell(2).getStringCellValue().strip();
             String sentence_meaning = row.getCell(3).getStringCellValue();
             int level = (int) row.getCell(4).getNumericCellValue();
+            String quiz_type = row.getCell(5).getStringCellValue();
 
             // 해당 key에 해당하는 값 중복 체크 (1차 중복 체크 - 메모리)
             map.putIfAbsent(word, new ArrayList<>());
@@ -127,7 +128,7 @@ public class ExcelService {
                 // meaning과 sentence가 같이 중복인 경우는 새로 추가하지 않음(2차 중복 체크 - DB)
                 int exists = sentenceRepository.existsByMeanAndSentence(meaning.getId(), sentence);
                 if (exists == 0) {
-                    list.add(Sentence.createSentence(meaning, sentence, sentence_meaning, level));
+                    list.add(Sentence.createSentence(meaning, sentence, sentence_meaning, level, quiz_type));
                 }
             }
         }

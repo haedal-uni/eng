@@ -1,70 +1,73 @@
-/* TTS 모달 */
+/* ===== tts.css ===== */
+
 .tts-container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    /*gap: 1rem;*/
-    padding: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #f9f9f9;
+  margin-top: 20px;
+  padding: 14px 16px;
+  background-color: #fff0f0;
+  border: 1px solid #ffb6b9;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .tts-control-group {
-    width: 100%;
-    /*display: flex;*/
-    flex-direction: column;
-    gap: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: #555;
 }
 
+/* 라벨 너비 고정 → 슬라이더 정렬 */
 .tts-control-group label {
-    font-size: 0.9rem;
-    color: #555;
+  min-width: 80px;
+  font-weight: bold;
+  color: #ff6f61;
+  font-size: 13px;
 }
 
+/* 슬라이더 */
 .tts-control-group input[type="range"] {
-    width: 50%;
+  flex: 1;
+  accent-color: #ff6f61;
+  cursor: pointer;
+  height: 4px;
 }
 
-.tts-control-group select,
-.tts-control-group input[type="text"] {
-    width: 100%;
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1rem;
+/* 현재 값 표시 숫자 */
+.tts-control-group span {
+  min-width: 28px;
+  text-align: right;
+  font-weight: bold;
+  color: #ff6f61;
+  font-size: 13px;
 }
 
+/* 읽기 버튼 */
 .tts-action-buttons {
-    display: flex;
-    gap: 1rem;
-    margin-top: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 4px;
 }
 
-.tts-action-buttons button {
-    width: 60px;
-    padding: 0.3rem 0.8rem;
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
-    cursor: pointer;
+.tts-action-buttons .speak {
+  padding: 8px 22px;
+  background-color: #ff6f61;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
 }
 
-.tts-action-buttons button.speak {
-    background-color: #007bff;
-    color: #fff;
+.tts-action-buttons .speak:hover {
+  background-color: #e05a4d;
+  transform: translateY(-1px);
 }
 
-.tts-action-buttons button.speak:hover {
-    background-color: #0056b3;
-}
-
-.tts-action-buttons button.clear {
-    background-color: #6c757d;
-    color: #fff;
-}
-
-.tts-action-buttons button.clear:hover {
-    background-color: #5a6268;
+.tts-action-buttons .speak:active {
+  transform: translateY(0);
 }
