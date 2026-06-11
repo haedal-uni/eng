@@ -12,11 +12,9 @@ public interface MyPageRepository extends JpaRepository<StudyHistory, Long> {
     @Query("SELECT max(s.date) FROM StudyHistory s where s.user.id = :userId")
     LocalDate findLastDay(Long userId);
 
-    @Query("select s from StudyHistory s where s.user.id = :userId and s.date = :today")
-    StudyHistory findLastTime(Long userId, LocalDate today);
+    StudyHistory findByUser_IdAndDate(Long userId, LocalDate date);
 
-    @Query("select s from StudyHistory s where s.date between :start and :end and s.user.id=:userId")
-    List<StudyHistory> findBy7daysTime(LocalDate start, LocalDate end, Long userId);
+    List<StudyHistory> findByUser_IdAndDateBetween(Long userId, LocalDate start, LocalDate end);
 
     @Query("select new com.eng.dto.LevelResponseDto(c.level, count(c.level)) from Sentence c where c.id in (select s.sentence.id from Study s where s.user.id = :userId) group by c.level")
     List<LevelResponseDto> findLevelByUserId(Long userId);

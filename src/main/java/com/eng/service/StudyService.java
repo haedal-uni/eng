@@ -43,10 +43,10 @@ public class StudyService {
         if(date==null || !date.isEqual(today)){ // 오늘 날짜가 아니라면 학습하지 않은 데이터 10개 조회
             findNotInStudy(user, list, 10, studyList, today);
         }else{ // 오늘 날짜라면 Study 테이블에서 조회
-            List<Study> study = studyRepository.findLastDayForStudy(today, user.getId()); // 오늘날짜에 학습한 데이터 조회
+            List<Study> study = studyRepository.findByDateAndUser_Id(today, user.getId()); // 오늘날짜에 학습한 데이터 조회
             for(Study st : study){
                 // 단어에 해당하는 예문이 중복일 수 있으므로 첫번째 조회
-                Sentence sentence = sentenceRepository.findBySentence(st.getMeaning().getId()).get(0);
+                Sentence sentence = sentenceRepository.findByMeaning_Id(st.getMeaning().getId()).get(0);
                 list.add(StudyResponseDto.of(
                         st.getWord().getWord(),
                         st.getMeaning().getMeaning(),
@@ -91,23 +91,23 @@ public class StudyService {
         List<StudyDto> cachedStudyList = redisService.getStudyList(username);
         Integer lastPage = redisService.getMaxPage(username);
         User user = userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
-        int startIndex = (lastPage != null) ? lastPage : studyRepository.countLastDayForStudy(today, user.getId());
+        long startIndex = (lastPage != null) ? lastPage : studyRepository.countByDateAndUser_Id(today, user.getId());
         if(maxPage<startIndex){
             return;
         }
         if(cachedStudyList!=null && !cachedStudyList.isEmpty()){ // 캐시가 있을 경우
-            int endIndex;
+            long endIndex;
             List<StudyDto> studiesToSaveDto;
             List<StudyDto> remainingCache;
             if(lastPage==null) { // 처음 저장 시
                 // 저장할 데이터와 Redis에 남길 데이터를 분리
                 endIndex = Math.min(maxPage + 1 - startIndex, cachedStudyList.size());
-                studiesToSaveDto = new ArrayList<>(cachedStudyList.subList(0, endIndex));
-                remainingCache = new ArrayList<>(cachedStudyList.subList(endIndex, cachedStudyList.size()));
+                studiesToSaveDto = new ArrayList<>(cachedStudyList.subList(0, (int) endIndex));
+                remainingCache = new ArrayList<>(cachedStudyList.subList((int) endIndex, cachedStudyList.size()));
             } else{ // 이후 나머지 데이터 계산
                 endIndex = Math.min(maxPage-startIndex, cachedStudyList.size());
-                studiesToSaveDto = new ArrayList<>(cachedStudyList.subList(0, endIndex));
-                remainingCache = new ArrayList<>(cachedStudyList.subList(endIndex, cachedStudyList.size()));
+                studiesToSaveDto = new ArrayList<>(cachedStudyList.subList(0, (int) endIndex));
+                remainingCache = new ArrayList<>(cachedStudyList.subList((int) endIndex, cachedStudyList.size()));
             }
 
             // DTO -> Entity 변환
@@ -131,7 +131,7 @@ public class StudyService {
         }
         else {
             // 캐시가 없을 경우 데이터 생성
-            generateStudyList(username, maxPage+1, startIndex, today);
+            generateStudyList(username, maxPage+1, (int) startIndex, today);
         }
     }
 

@@ -12,9 +12,7 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
     @Query("SELECT max(s.date) FROM Study s WHERE s.user.id = :userId")
     LocalDate findLastDay(Long userId);
 
-    @Query("select s from Study s where s.date = :today and s.user.id = :userId")
-    List<Study> findLastDayForStudy(LocalDate today, Long userId);
+    List<Study> findByDateAndUser_Id(LocalDate date, Long userId);
 
-    @Query("select count(*) from Study s where s.date = :today and s.user.id = :userId")
-    int countLastDayForStudy(LocalDate today, Long userId);
+    long countByDateAndUser_Id(LocalDate date, Long userId);
 }
