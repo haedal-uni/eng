@@ -48,8 +48,8 @@ public class ExcelService {
         while (rowIterator.hasNext()) {
             Row row = rowIterator.next();
             Word word = Word.builder()
-                    .word(row.getCell(0).getStringCellValue().strip())
-                    .build();
+                .word(row.getCell(0).getStringCellValue().strip())
+                .build();
             words.add(word);
         }
         // DB에 저장(중복 try~catch)
@@ -80,13 +80,13 @@ public class ExcelService {
             if (!Objects.requireNonNull(map.get(wordText)).contains(meaningText)) {
                 map.add(wordText, meaningText);
                 Word word = wordRepository.findByWord(wordText)
-                        .orElseThrow(() -> new NoSuchElementException("Word not found: " + wordText));
+                    .orElseThrow(() -> new NoSuchElementException("Word not found: " + wordText));
 
                 wordIdMap.put(word.getWord(), word.getId());
 
                 // word와 meaning이 같이 중복인 경우는 새로 추가하지 않음(2차 중복 체크 - DB)
-                int exists = meanRepository.existsByWordAndMeaning(word.getId(), meaningText);
-                if (exists == 0) {
+                boolean exists = meanRepository.existsByWordIdAndMeaning(word.getId(), meaningText);
+                if (!exists) {
                     list.add(Meaning.createMeaning(word, meaningText));
                 }
             }
@@ -120,14 +120,14 @@ public class ExcelService {
                 map.add(word, sentence);
                 Meaning meaning;
                 if (wordIdMap.get(word) != null) {
-                    meaning = meanRepository.findByMean(wordIdMap.get(word), meaningText).orElseThrow();
+                    meaning = meanRepository.findFirstByWordIdAndMeaning(wordIdMap.get(word), meaningText).orElseThrow();
                 } else {
                     Word wordId = wordRepository.findByWord(word).orElseThrow();
-                    meaning = meanRepository.findByMean(wordId.getId(), meaningText).orElseThrow();
+                    meaning = meanRepository.findFirstByWordIdAndMeaning(wordId.getId(), meaningText).orElseThrow();
                 }
                 // meaning과 sentence가 같이 중복인 경우는 새로 추가하지 않음(2차 중복 체크 - DB)
-                int exists = sentenceRepository.existsByMeanAndSentence(meaning.getId(), sentence);
-                if (exists == 0) {
+                boolean exists = sentenceRepository.existsByMeaning_IdAndSentence(meaning.getId(), sentence);
+                if (!exists) {
                     list.add(Sentence.createSentence(meaning, sentence, sentence_meaning, level, quiz_type));
                 }
             }
@@ -136,4 +136,3 @@ public class ExcelService {
         sentenceRepository.saveAll(list);
     }
 }
-

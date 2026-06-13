@@ -40,7 +40,7 @@ public class MyPageService {
         LocalDate date = myPageRepository.findLastDay(user.getId());
         LocalDate today = LocalDate.now();
         if (date != null && date.isEqual(today)) {// 오늘 날짜에 저장된 값이 있을 경우
-            StudyHistory lastTime = myPageRepository.findLastTime(user.getId(), today);
+            StudyHistory lastTime = myPageRepository.findByUser_IdAndDate(user.getId(), today);
             if (status.equals("study")) {
                 time += lastTime.getStudyTime();
                 lastTime.addStudyTime(time);
@@ -63,7 +63,7 @@ public class MyPageService {
     public List<MyPageResponseDto> get7dayTime(String username) {
         User user = userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
         LocalDate today = LocalDate.now();
-        List<StudyHistory> by7daysTime = myPageRepository.findBy7daysTime(today.minusDays(6), today, user.getId());
+        List<StudyHistory> by7daysTime = myPageRepository.findByUser_IdAndDateBetween(user.getId(), today.minusDays(6), today);
         return by7daysTime.stream().map(x ->
             MyPageResponseDto.of(
                 x.getStudyTime(),
