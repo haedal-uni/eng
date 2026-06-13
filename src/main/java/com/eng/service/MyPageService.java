@@ -63,7 +63,7 @@ public class MyPageService {
     public List<MyPageResponseDto> get7dayTime(String username) {
         User user = userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
         LocalDate today = LocalDate.now();
-        List<StudyHistory> by7daysTime = myPageRepository.findByUser_IdAndDateBetween(today.minusDays(6), today, user.getId());
+        List<StudyHistory> by7daysTime = myPageRepository.findByUser_IdAndDateBetween(user.getId(), today.minusDays(6), today);
         return by7daysTime.stream().map(x ->
             MyPageResponseDto.of(
                 x.getStudyTime(),
