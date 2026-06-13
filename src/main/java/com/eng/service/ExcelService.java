@@ -48,8 +48,8 @@ public class ExcelService {
         while (rowIterator.hasNext()) {
             Row row = rowIterator.next();
             Word word = Word.builder()
-                    .word(row.getCell(0).getStringCellValue().strip())
-                    .build();
+                .word(row.getCell(0).getStringCellValue().strip())
+                .build();
             words.add(word);
         }
         // DB에 저장(중복 try~catch)
@@ -80,7 +80,7 @@ public class ExcelService {
             if (!Objects.requireNonNull(map.get(wordText)).contains(meaningText)) {
                 map.add(wordText, meaningText);
                 Word word = wordRepository.findByWord(wordText)
-                        .orElseThrow(() -> new NoSuchElementException("Word not found: " + wordText));
+                    .orElseThrow(() -> new NoSuchElementException("Word not found: " + wordText));
 
                 wordIdMap.put(word.getWord(), word.getId());
 
@@ -136,4 +136,3 @@ public class ExcelService {
         sentenceRepository.saveAll(list);
     }
 }
-
