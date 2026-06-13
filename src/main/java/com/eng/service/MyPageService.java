@@ -69,7 +69,6 @@ public class MyPageService {
                 x.getStudyTime(),
                 x.getQuizTime(),
                 x.getDate()
-
             )).toList();
     }
 
