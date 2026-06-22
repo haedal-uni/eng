@@ -1,9 +1,14 @@
 ## 실행화면
-<img src="https://github.com/user-attachments/assets/e6f558ea-79d5-43e6-bcbc-43cba9b782f8" />
+
+https://github.com/user-attachments/assets/bd86a6e6-a55d-49d9-bbce-e336ad12aa54
+
+<br>
 
 * 단어 검색(자동완성), 학습, 빈칸 채우기 퀴즈 기능 제공            
 * 챗봇을 통한 품사 변환 · 동의어 · 예문 등 검색 지원           
-* 마이페이지에서 학습/퀴즈 시간, 복습 우선순위 Top3, 최근 오답 기록, AI 학습 피드백 제공          
+* 마이페이지에서 학습/퀴즈 시간, 복습 우선순위 Top3, 최근 오답 기록, AI 학습 피드백 제공
+     
+<img src="https://github.com/user-attachments/assets/e6f558ea-79d5-43e6-bcbc-43cba9b782f8" />
 
 <br>
 
